@@ -20,7 +20,7 @@ const AppLayout = ({ children, title, pageDescription }: Props) => {
 
       <Sidebar />
       <Navbar />
-      <main>
+      <main style={{ padding: '5rem'}}>
         { children }
       </main>
     </>
