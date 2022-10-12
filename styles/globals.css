@@ -1,0 +1,6 @@
+@media screen and (max-witdh: 600px) {
+    .responsive-block {
+        display: none;
+    }
+    
+}

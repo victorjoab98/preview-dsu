@@ -1,5 +1,5 @@
 import Head from "next/head";
-import { Sidebar } from '../ui/';
+import { Navbar, Sidebar } from '../ui/';
 
 interface Props {
   children: JSX.Element | JSX.Element[];
@@ -17,8 +17,9 @@ const AppLayout = ({ children, title, pageDescription }: Props) => {
         <meta name="og:description" content={ pageDescription }/>
       </Head>
 
-      <Sidebar />
 
+      <Sidebar />
+      <Navbar />
       <main>
         { children }
       </main>
