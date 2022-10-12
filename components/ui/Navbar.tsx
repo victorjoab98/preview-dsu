@@ -1,17 +1,20 @@
 import NextLink from 'next/link';
 
 import { AppBar, Box, Button, CardMedia, IconButton, Link, Toolbar, Typography } from '@mui/material';
-import { styled } from '@mui/material/styles';
-
 
 import { MenuOpen } from '@mui/icons-material/';
-const Navbar = () => {
 
+import { useAppDispatch } from '../../store/hooks';
+import { setOpenMenu } from '../../store/slices/ui';
+
+const Navbar = () => {
+    const dispatch = useAppDispatch();
+    
     return (
         <AppBar color='transparent' >
             <Toolbar>
 
-                <IconButton>
+                <IconButton onClick={ () => dispatch( setOpenMenu(true) )}>
                     <MenuOpen/>
                 </IconButton>
                 <NextLink href='/' passHref>
@@ -39,8 +42,7 @@ const Navbar = () => {
                         <Button>Tasks</Button>
                     </Link>
                 </NextLink>
-                
-                
+            
             </Toolbar>
         </AppBar>
     )

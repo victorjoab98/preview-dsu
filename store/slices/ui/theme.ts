@@ -1,13 +1,14 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import Cookie from 'js-cookie';
 
 type modeType = 'dark' | 'light'
 
 interface InitialState {
-    mode: modeType;
+    mode: modeType | string;
 }
 
 const initialState: InitialState = {
-    mode: 'light'
+    mode: Cookie.get('theme') || 'light'
 }
 
 export const themeSlice = createSlice({

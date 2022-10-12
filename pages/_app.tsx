@@ -7,15 +7,16 @@ import { store } from '../store';
 import { darkTheme, lightTheme  } from '../theme'
 
 import '../styles/globals.css';
+import { PageProvider } from '../components/ui/';
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
-    <ThemeProvider theme={ lightTheme }>
-      <Provider store = { store } >
+    <Provider store = { store } >
+      <PageProvider>
         <CssBaseline />
         <Component {...pageProps} />
-      </Provider>
-    </ThemeProvider>
+      </PageProvider>
+    </Provider>
   )
 }
 
