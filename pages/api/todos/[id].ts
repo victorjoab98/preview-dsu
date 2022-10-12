@@ -18,9 +18,7 @@ export default function handler( req: NextApiRequest, res: NextApiResponse<Data>
 
 function deleteTodo( req: NextApiRequest, res: NextApiResponse<Data>){
     const { id } = req.query;
-    console.log( id );
     const todoIndex = todos.findIndex( todo => todo.id == Number(id) );
-    console.log( todoIndex );
     if( todoIndex === -1 ){
         return res.status(404).json({ message: 'Todo not found' });
     }

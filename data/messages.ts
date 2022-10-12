@@ -1,11 +1,10 @@
-import { ToDo } from "../interfaces";
+import { Message } from "../interfaces";
 
-export const todos: ToDo[] = [
+export const messages: Message[] = [
     {
         id: 1,
-        description: 'Learn Next.js',
+        text: 'Hey Team I am learning Next.js :D',
         createdAt: new Date(),
-        status: 'ToDo',
         user: {
             id: 1,
             name: 'John Doe',
@@ -14,9 +13,8 @@ export const todos: ToDo[] = [
     },
     {
         id: 2,
-        description: 'Learn React',
+        text: 'Wow, I am learning React!',
         createdAt: new Date(),
-        status: 'In Progress',
         user: {
             id: 2,
             name: 'Peter Parker',
@@ -26,9 +24,8 @@ export const todos: ToDo[] = [
     },
     {
         id: 3,
-        description: 'Learn MongoDB',
+        text: 'Nice, I am learning MongoDB haha.',
         createdAt: new Date(),
-        status: 'Done',
         user: {
             id: 3,
             name: 'Bruce Wayne',
@@ -37,9 +34,8 @@ export const todos: ToDo[] = [
     },
     {   
         id: 4,
-        description: 'Learn Jira',
+        text: 'Cool, I am also learning Python.',
         createdAt: new Date(),
-        status: 'ToDo',
         user: {
             id: 2,
             name: 'Peter Parker',

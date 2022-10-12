@@ -29,10 +29,10 @@ function createTodo( req: NextApiRequest, res:NextApiResponse<Data> ){
     const user: User = users.find( user => user.id === userId )!;
    
     const newToDo: ToDo = {
-        id: todos[todos.length - 1].id + 1,
+        id: (todos[todos.length - 1].id * 2) + 1,
         description,
         createdAt: new Date(),
-        status: 'To Do',
+        status: 'ToDo',
         user
     }
 

@@ -8,4 +8,4 @@ export interface ToDo {
     user: User;
 }
 
-export type ToDoStatus = 'To Do' | 'In Progress' | 'Done';
+export type ToDoStatus = 'ToDo' | 'In Progress' | 'Done';
