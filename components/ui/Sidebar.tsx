@@ -1,4 +1,6 @@
-import { Box, CardMedia, Divider, Drawer, List, ListItem, ListItemIcon, ListItemText, ListSubheader, Typography } from '@mui/material';
+import NextLink from 'next/link';
+
+import { Box, CardMedia, Divider, Drawer, List, ListItem, ListItemIcon, ListItemText, ListSubheader, Typography, Link } from '@mui/material';
 import Cookie from 'js-cookie';
 
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
@@ -55,24 +57,37 @@ const Sidebar = () => {
                         </ListItemIcon>                    
                         <Typography variant='h2' sx={{ fontSize: 30}}>Osono</Typography>
                     </Box>
-                    <ListItem button onClick={ () => dispatch( setOpenMenu(false) )}>
-                        <ListItemIcon>
-                            <HomeOutlined />
-                        </ListItemIcon>                    
-                        <ListItemText>Home</ListItemText>
-                    </ListItem>
-                    <ListItem button>
-                        <ListItemIcon>
-                            <TaskAltOutlined />
-                        </ListItemIcon>                    
-                        <ListItemText>My tasks</ListItemText>
-                    </ListItem>
-                    <ListItem button>
-                        <ListItemIcon>
-                            <ForumOutlined />
-                        </ListItemIcon>                    
-                        <ListItemText>Messages</ListItemText>
-                    </ListItem>
+                    <NextLink href='/' passHref>
+                        <Link>
+                            <ListItem button onClick={ () => dispatch( setOpenMenu(false) )}>
+                                <ListItemIcon>
+                                    <HomeOutlined />
+                                </ListItemIcon>                    
+                                <ListItemText>Home</ListItemText>
+                            </ListItem>
+                        </Link>
+                    </NextLink>
+                    <NextLink href='/todo' passHref>
+                        <Link>
+                            <ListItem button>
+                                <ListItemIcon>
+                                    <TaskAltOutlined />
+                                </ListItemIcon>                    
+                                <ListItemText>My tasks</ListItemText>
+                            </ListItem>
+                        </Link>
+                    </NextLink>
+                    <NextLink href='/messages' passHref>
+                        <Link>
+                            <ListItem button>
+                                <ListItemIcon>
+                                    <ForumOutlined />
+                                </ListItemIcon>                    
+                                <ListItemText>Messages</ListItemText>
+                            </ListItem>
+                        </Link>
+                    </ NextLink>
+
                     <ListItem button onClick={ handleTheme }>
                         <ListItemIcon>
                             <Brightness4Outlined />
