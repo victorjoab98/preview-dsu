@@ -1,6 +1,8 @@
 import Head from "next/head";
 import { Navbar, Sidebar } from '../ui/';
 
+import styles from './AppLayout.module.css'
+
 interface Props {
   children: JSX.Element | JSX.Element[];
   title: string;
@@ -8,6 +10,7 @@ interface Props {
 }
 
 const AppLayout = ({ children, title, pageDescription }: Props) => {
+
   return (
     <>
       <Head>
@@ -20,7 +23,7 @@ const AppLayout = ({ children, title, pageDescription }: Props) => {
 
       <Sidebar />
       <Navbar />
-      <main style={{ padding: '5rem'}}>
+      <main style={{ padding: '5rem 1rem 1rem' }}>
         { children }
       </main>
     </>

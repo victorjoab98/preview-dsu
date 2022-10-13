@@ -29,6 +29,11 @@ export const lightTheme = createTheme({
             defaultProps: {
               underline: 'none'
             }
+          },
+          MuiAppBar: {
+            defaultProps: {
+              elevation: 1
+            }
           }
     }
 })

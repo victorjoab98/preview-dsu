@@ -29,6 +29,6 @@ export const darkTheme = createTheme({
           defaultProps: {
             underline: 'none'
           }
-        }
+        },
     }
 })
