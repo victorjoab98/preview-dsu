@@ -6,3 +6,9 @@ export interface Message {
     createdAt: Date;
     user: User;
 } 
+
+
+
+export interface ReduxMessage extends Omit <Message, 'createdAt'> {
+    createdAt: number;
+}
