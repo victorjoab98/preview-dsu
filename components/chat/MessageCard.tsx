@@ -1,7 +1,7 @@
 import { Box, Typography } from '@mui/material'
 
 import styles from './Chat.module.css';
-import { getFormatDistanceToNow } from '../../utils/';
+import { getDistanceNow } from '../../utils/';
 import { ReduxMessage, User } from '../../interfaces';
 
 interface Props {
@@ -28,7 +28,7 @@ const MessageCard = ({ recentMessage }: Props) => {
       <Typography 
         variant='subtitle2' 
         className={ styles.chat__username}
-        sx={ stylesValidations() ? { textAlign: 'right' } : {} }
+        sx={ stylesValidations() ? { textAlign: 'left' } : {} }
       >
         {recentMessage.user.name.toUpperCase()}
       </Typography>
@@ -40,7 +40,7 @@ const MessageCard = ({ recentMessage }: Props) => {
             { recentMessage.text }
           </Typography>
           <Typography variant='caption' className={ styles.chat__date }>
-            { getFormatDistanceToNow( recentMessage.createdAt ) } 
+            { getDistanceNow( recentMessage.createdAt ) } 
           </Typography>
       </Box>
     </Box>

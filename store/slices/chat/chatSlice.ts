@@ -1,8 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { Message, ReduxMessage, User } from '../../../interfaces';
 
-// type ReduxMessage = Omit<Message, 'createdAt'>
-
 
 interface InitialState {
     messages: ReduxMessage[];
@@ -12,7 +10,7 @@ interface InitialState {
 const initialState: InitialState = {
     messages: [
         {
-            createdAt: Date.now(),
+            createdAt: 1665714566735,
             id: 5,
             text: 'que tal todos',
             user: {
@@ -22,7 +20,7 @@ const initialState: InitialState = {
             }
         },
         {
-            createdAt: Date.now(),
+            createdAt: 1665714566735,
             id: 8,
             text: 'Morning team!!!',
             user: {
@@ -42,7 +40,7 @@ export const chatSlice = createSlice({
             state.messages = [...state.messages, action.payload];
         },
         removeMessages: (state, action: PayloadAction<[]>) => {  
-            state.messages = [];
+            state.messages = action.payload;
         },
     }
 });
