@@ -11,7 +11,7 @@ const Navbar = () => {
     const dispatch = useAppDispatch();
     
     return (
-        <AppBar color='transparent' >
+        <AppBar color='default' >
             <Toolbar>
 
                 <IconButton onClick={ () => dispatch( setOpenMenu(true) )}>

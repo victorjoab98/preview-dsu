@@ -4,7 +4,7 @@ export const users : User[] =
     [
         {
             id: 1,
-            name: 'John Doe',
+            name: 'John Titor',
             email: 'john@telus.com'
         },
         {
@@ -14,7 +14,7 @@ export const users : User[] =
         },
         {
             id: 3,
-            name: 'Bruce Wayne',
+            name: 'Bruce Cruise',
             email: 'batman@telus.com'
         },
         {
