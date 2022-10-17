@@ -1,0 +1,8 @@
+.todo__custom__scrollbar::-webkit-scrollbar {
+    width: 10px;
+}
+
+.todo__custom__scrollbar::-webkit-scrollbar-thumb {
+    border-radius: 1rem;
+    background: #888;
+}
