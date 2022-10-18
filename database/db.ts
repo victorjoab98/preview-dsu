@@ -35,6 +35,7 @@ export const disconnectDatabase = async () => {
     if (mongoConnections.isConnected === 0) {
         return;
     }
+    mongoConnections.isConnected = 0;
     console.log('Database connection closed');
     await moongose.disconnect();
 }
