@@ -3,7 +3,7 @@ import { User } from "./user";
 export interface ToDo {
     id: number;
     description: string;
-    createdAt: Date;
+    createdAt: number;
     status: ToDoStatus;
     user: User;
 }

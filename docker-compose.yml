@@ -1,5 +1,5 @@
 services:
-  entriesdb:
+  mongoTeamDb:
     image: mongo:5.0.0
     container_name: dsu-app-db
     ports:
