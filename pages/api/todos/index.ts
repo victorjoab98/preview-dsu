@@ -64,16 +64,12 @@ const getTodos = async ( res: NextApiResponse<Data> ) => {
 
         await db.disconnectDatabase();
     
-        console.log('wanna see', todo)
         return res.status(200).json(todo);
 
     } catch (error) {
         console.log(error);
         res.status(500).json({ message: 'something went wrong while trying to save todos' })
     }
-    
-
-    return res.status(201).json( { message: 'Are you working ok?'} );
 }
 
             

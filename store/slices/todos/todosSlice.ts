@@ -1,4 +1,4 @@
-import { createSlice, current, PayloadAction } from '@reduxjs/toolkit';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { ToDo } from '../../../interfaces'
 
 interface InitialState {
@@ -16,7 +16,7 @@ export const todosSlice = createSlice({
     initialState,
     reducers: {
         addTodo: (state, action: PayloadAction<ToDo>) => {
-            state.todos = [...state.todos, action.payload];
+            state.todos = [action.payload, ...state.todos];
         },
         getTodos: (state, action: PayloadAction<ToDo[]>) => {
             state.todos = action.payload;
