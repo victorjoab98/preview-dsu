@@ -24,7 +24,7 @@ export const NewTodo = () => {
     }
 
     dispatch( saveTodoThunk(description) );
-    dispatch(setIsAddingTodo(false))
+    dispatch( setIsAddingTodo(false) )
     setDescription('');
   }
 

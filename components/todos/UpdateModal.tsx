@@ -5,7 +5,7 @@ import Button from '@mui/material/Button';
 import { TextField } from '@mui/material';
 import { ToDo } from '../../interfaces/';
 import { useAppDispatch } from '../../store';
-import { updateTodo } from '../../store/slices/todos';
+import { updateTodo, updateTodoThunk } from '../../store/slices/todos';
 import { useSnackbar } from 'notistack';
 
 const style = {
@@ -51,7 +51,7 @@ export const UpdateModal: React.FC<Props> = ({ todo }) => {
 
         const newTodo = { ...todo, description};
         setDescription(newTodo.description);
-        dispatch( updateTodo(newTodo));
+        dispatch( updateTodoThunk(newTodo));
         handleClose();
         enqueueSnackbar('ToDo updated successfully.', {
             variant: 'success', 

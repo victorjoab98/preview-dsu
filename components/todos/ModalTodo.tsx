@@ -5,7 +5,7 @@ import Modal from '@mui/material/Modal';
 import { ToDo } from '../../interfaces/';
 import { Button } from '@mui/material';
 import { useAppDispatch } from '../../store';
-import { deleteTodo } from '../../store/slices/todos';
+import { deleteTodoThunk } from '../../store/slices/todos';
 import { UpdateModal } from './UpdateModal';
 import { useSnackbar } from 'notistack';
 
@@ -49,7 +49,7 @@ export const ModalTodo: React.FC<Props> = ({todo, show, setShow}) => {
 
   const handleDelete = () => {
     if( confirm('Are you sure you want to delete this todo?')){
-      dispatch(deleteTodo(todo._id));
+      dispatch(deleteTodoThunk(todo._id));
       handleClose();
       enqueueSnackbar('ToDo deleted successfully.', {
         variant: 'error', 
