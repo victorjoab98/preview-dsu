@@ -31,6 +31,17 @@ export const getTodosThunk = (): AppThunk => {
     }
 }
 
+export const updateTodoStatusThunk = ( todo: ToDo): AppThunk => {
+    return async (dispatch, getState) => {
+        try {
+            const { data } = await api.patch<ToDo>(`/todos/${todo._id}`, todo);
+            dispatch( updateTodo( data ) )
+        } catch (error) {
+            console.log('Error happend while trying to getTodos in frontend', error)
+        }
+    }
+}
+
 export const updateTodoThunk = ( todo: ToDo): AppThunk => {
     return async (dispatch, getState) => {
         try {

@@ -2,7 +2,7 @@ import { List, Paper } from '@mui/material'
 import React, { FC, useMemo } from 'react'
 import { ToDoStatus } from '../../interfaces'
 import { useAppDispatch, useAppSelector } from '../../store'
-import { updateStatusTodo } from '../../store/slices/todos'
+import { updateTodoStatusThunk } from '../../store/slices/todos'
 import { setIsDraggingTodo } from '../../store/slices/ui'
 import TodoItem from './TodoItem'
 import styles from './TodoList.module.css'
@@ -26,7 +26,7 @@ export const TodoList:FC<Props> = ({status}) => {
     const id = e.dataTransfer.getData('text/plain');
     const todo = todos.find( todo => todo._id === id )!;
     const updateTodo = { ...todo, status: status };
-    dispatch( updateStatusTodo( updateTodo ) );
+    dispatch( updateTodoStatusThunk( updateTodo ) );
     dispatch( setIsDraggingTodo(false) );
   }
 
