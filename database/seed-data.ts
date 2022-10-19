@@ -1,15 +1,15 @@
 import { Message, User } from '../interfaces';
 import { ToDo } from '../interfaces/todo';
 
-interface SeedUser extends Omit<User, 'id'> {
+interface SeedUser extends Omit<User, '_id' | 'id'> {
     _id: string
 }
 
-interface SeedTodo extends Omit<ToDo, 'id'| 'user'> {
+interface SeedTodo extends Omit<ToDo, '_id'| 'user'> {
     user: SeedUser
 }
 
-interface SeedMessage extends Omit<Message, 'id' | 'user'> {
+interface SeedMessage extends Omit<Message, '_id' | 'user' | 'id'> {
     user: SeedUser;
 }
 

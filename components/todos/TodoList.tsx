@@ -24,19 +24,21 @@ export const TodoList:FC<Props> = ({status}) => {
 
   const onDropTodo = (e: React.DragEvent<HTMLDivElement>) => {
     const id = e.dataTransfer.getData('text/plain');
-    const todo = todos.find( todo => todo.id === Number(id) )!;
+    const todo = todos.find( todo => todo._id === id )!;
     const updateTodo = { ...todo, status: status };
     dispatch( updateStatusTodo( updateTodo ) );
     dispatch( setIsDraggingTodo(false) );
   }
 
+  if (todosByStatus.length === 0) return null; 
+  
   return (
     <div onDrop={onDropTodo} onDragOver={onDragOver} >
         <Paper className={ styles.todo__custom__scrollbar } sx={{ height: 'calc(100vh)', overflow: 'scroll', backgroundColor: 'transparent', padding: '0.5rem'}}>
             <List sx={{ opacity: isDraggingTodo ? 0.3 : 1, transition: 'all .3s'}}>
               {
                 todosByStatus.map( todo => (
-                  <TodoItem key={todo.id} todo={todo} />
+                  <TodoItem key={todo._id} todo={todo} />
                   ))
               }
             </List>

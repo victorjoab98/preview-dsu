@@ -3,7 +3,7 @@ import Box from '@mui/material/Box';
 import Modal from '@mui/material/Modal';
 import Button from '@mui/material/Button';
 import { TextField } from '@mui/material';
-import { ToDoRedux } from '../../interfaces/todoRedux';
+import { ToDo } from '../../interfaces/';
 import { useAppDispatch } from '../../store';
 import { updateTodo } from '../../store/slices/todos';
 import { useSnackbar } from 'notistack';
@@ -23,7 +23,7 @@ const style = {
 };
 
 interface Props {
-    todo: ToDoRedux,
+    todo: ToDo,
   }
 
 export const UpdateModal: React.FC<Props> = ({ todo }) => {

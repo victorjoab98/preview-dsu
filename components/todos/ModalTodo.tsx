@@ -2,7 +2,7 @@ import * as React from 'react';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
-import { ToDoRedux } from '../../interfaces/todoRedux';
+import { ToDo } from '../../interfaces/';
 import { Button } from '@mui/material';
 import { useAppDispatch } from '../../store';
 import { deleteTodo } from '../../store/slices/todos';
@@ -22,7 +22,7 @@ const style = {
 };
 
 interface Props {
-  todo: ToDoRedux,
+  todo: ToDo,
   show: boolean;
   setShow: React.Dispatch<React.SetStateAction<boolean>>;
 }
@@ -33,7 +33,7 @@ export const ModalTodo: React.FC<Props> = ({todo, show, setShow}) => {
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
   const dispatch = useAppDispatch();
-  const createdAt = new Date(JSON.parse(todo.createdAt)).toLocaleString('en-US');
+  const createdAt = new Date(todo.createdAt).toLocaleString('en-US');
 
   React.useEffect(() => {
     if(show){
@@ -49,7 +49,7 @@ export const ModalTodo: React.FC<Props> = ({todo, show, setShow}) => {
 
   const handleDelete = () => {
     if( confirm('Are you sure you want to delete this todo?')){
-      dispatch(deleteTodo(todo.id));
+      dispatch(deleteTodo(todo._id));
       handleClose();
       enqueueSnackbar('ToDo deleted successfully.', {
         variant: 'error', 

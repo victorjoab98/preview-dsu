@@ -45,8 +45,8 @@ export const users : User[] =
     status: true
  }
 
- export const authAdmin:User = {
-    id: 2,
+ export const authAdmin = {
+    id: '634f1a0283a505369ee20da8',
     name: 'Garcia perez',
     email: 'g@gmail.com',
     password: '1234',

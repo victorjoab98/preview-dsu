@@ -1,7 +1,7 @@
 import { User } from "./user";
 
 export interface ToDo {
-    id: number;
+    _id: string;
     description: string;
     createdAt: number;
     status: ToDoStatus;

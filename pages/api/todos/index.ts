@@ -1,5 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
-import { ToDo as TodoModel } from '../../../models';
+import { ToDo as TodoModel, User } from '../../../models';
 
 import { ToDo } from '../../../interfaces';
 import { authAdmin, authUser } from '../../../data/users';
@@ -9,6 +9,7 @@ type Data =
 | ToDo
 | ToDo [] 
 | { message: string }
+| any
 
 
 export default function handler( req: NextApiRequest, res: NextApiResponse<Data> ) {
@@ -29,13 +30,10 @@ const getTodos = async ( res: NextApiResponse<Data> ) => {
 
         await db.connectToDatabase();
 
-        if (authUser.role === 'USER_ROLE') {
-            // console.log('you should join here before it crashes')
-           todos = await TodoModel.find({ user:  authUser.id }).sort({createdAt: 'ascending'})
-        } else {
-            todos = await TodoModel.find().sort({createdAt: 'ascending'})
-        }
-
+        authAdmin.role === 'USER_ROLE'
+           ? todos = await TodoModel.find({ user:  authUser.id }).sort({createdAt: 'descending'}).populate('user')
+           : todos = await TodoModel.find().sort({createdAt: 'descending'}).populate('user');
+        
         await db.disconnectDatabase();
 
         return res.status(200).json(todos);
@@ -56,19 +54,22 @@ const getTodos = async ( res: NextApiResponse<Data> ) => {
         
         const todo = new TodoModel({ 
             description,  
-            user: authUser.id,
+            user: authAdmin.id,
             createdAt: Date.now()
-        })
-        
+        })        
+
+        await todo.populate('user');
+
         await todo.save();
 
         await db.disconnectDatabase();
     
+        console.log('wanna see', todo)
         return res.status(200).json(todo);
 
     } catch (error) {
         console.log(error);
-        res.status(500).json({ message: 'something went wrong while trying to get todos' })
+        res.status(500).json({ message: 'something went wrong while trying to save todos' })
     }
     
 
