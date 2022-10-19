@@ -1,6 +1,6 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import { db, seedData } from '../../database';
-import { User, Message, ToDo } from '../../models';
+import { UserModel, MessageModel, ToDoModel } from '../../models';
 
 interface Data {
   message: string;
@@ -17,15 +17,15 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
     await db.connectToDatabase();
 
     await Promise.all([
-      User.deleteMany(),
-      Message.deleteMany(),
-      ToDo.deleteMany()
+      UserModel.deleteMany(),
+      MessageModel.deleteMany(),
+      ToDoModel.deleteMany()
     ])
     
     await Promise.all([
-      User.insertMany( seedData.users),
-      Message.insertMany( seedData.messages ),
-      ToDo.insertMany( seedData.todos ),
+      UserModel.insertMany( seedData.users),
+      MessageModel.insertMany( seedData.messages ),
+      ToDoModel.insertMany( seedData.todos ),
     ]);
 
     await db.disconnectDatabase();
@@ -33,12 +33,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
       
     } catch (error) {
       console.log(error)
-      res.status(500).json({ message: 'Something went wront, contact your admin' });
-      
+      res.status(500).json({ message: 'Something went wront, contact your admin' });      
     }
-    
-    
-
-
-
 }

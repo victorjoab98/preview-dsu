@@ -22,7 +22,7 @@ interface SeedData {
 const KunjoUser: SeedUser = {
     _id: '634f1a0283a505369ee20da8',
     name: 'Kunjo Lee',
-    email: 'k@gmail.com',
+    email: 'kunjo@gmail.com',
     password: '1234',
     role: 'ADMIN_ROLE',
     status: true  
@@ -31,7 +31,7 @@ const KunjoUser: SeedUser = {
 const VictorUser: SeedUser = {
     _id: '634f1a0283a505369ee20da9',
     name: 'Victor Morales',
-    email: 'v@gmail.com',
+    email: 'victor@gmail.com',
     password: '1234',
     role: 'ADMIN_ROLE',
     status: true  
@@ -39,7 +39,7 @@ const VictorUser: SeedUser = {
 
 const JaimeUser: SeedUser = {
     _id: '634f1a0283a505369ee20daa',
-    name: 'Jaime',
+    name: 'Jaime Tuyuc',
     email: 'jaime@gmail.com',
     password: '1234',
     role: 'USER_ROLE',
@@ -48,7 +48,7 @@ const JaimeUser: SeedUser = {
 
 const MarcelaUser: SeedUser = {
     _id: '634f1a0283a505369ee20dad',
-    name: 'Marcela',
+    name: 'Marcela Obeso',
     email: 'marcela@gmail.com',
     password: '1234',
     role: 'USER_ROLE',
@@ -57,7 +57,7 @@ const MarcelaUser: SeedUser = {
 
 const ChamaleUser: SeedUser ={
     _id: '634f1a0283a505369ee20dab',
-    name: 'Victor Chamala',
+    name: 'Victor Chamale',
     email: 'chamale@gmail.com',
     password: '1234',
     role: 'USER_ROLE',
@@ -66,7 +66,7 @@ const ChamaleUser: SeedUser ={
 
 const CristianUser: SeedUser = {
     _id: '634f1a0283a505369ee20dac',
-    name: 'Cristian',
+    name: 'Cristian Monroy',
     email: 'cristian@gmail.com',
     password: '1234',
     role: 'USER_ROLE',

@@ -1,7 +1,7 @@
 import { api } from '../../../api';
 import { ToDo } from '../../../interfaces';
 import { AppThunk } from '../../store';
-import { addTodo, deleteTodo, getTodos, updateTodo } from './todosSlice';
+import { addTodo, deleteTodo, getTodos, updateStatusTodo, updateTodo } from './todosSlice';
 
 export const saveTodoThunk = (description: string): AppThunk => {
 
@@ -35,7 +35,7 @@ export const updateTodoStatusThunk = ( todo: ToDo): AppThunk => {
     return async (dispatch, getState) => {
         try {
             const { data } = await api.patch<ToDo>(`/todos/${todo._id}`, todo);
-            dispatch( updateTodo( data ) )
+            dispatch( updateStatusTodo( data ) )
         } catch (error) {
             console.log('Error happend while trying to getTodos in frontend', error)
         }

@@ -1,8 +1,7 @@
 import { NextApiRequest, NextApiResponse } from "next"
-import { todos } from "../../../data/todos"
 import { db } from "../../../database"
 import { ToDo } from "../../../interfaces"
-import { ToDo as ToDoModel } from "../../../models"
+import { ToDoModel } from "../../../models"
 
 
 type Data = 
@@ -28,7 +27,7 @@ const updateTodo = async ( req: NextApiRequest, res: NextApiResponse<Data>) => {
         const { id } = req.query;
         await db.connectToDatabase();
 
-        const todo = await ToDoModel.findByIdAndUpdate( id, req.body, { new: false } );
+        const todo = await ToDoModel.findByIdAndUpdate( id, req.body, { new: true } ).populate('user');
         await db.disconnectDatabase();
         return res.status(200).json( todo )
 
