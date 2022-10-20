@@ -28,14 +28,10 @@ export const TodoList:FC<Props> = ({status}) => {
     const todo = todos.find( todo => todo._id === id )!;
     const updateTodo = { ...todo, status: status };
 
-    console.log('el status', status)
-    console.log(updateTodo)
-
     dispatch( updateTodoStatusThunk( updateTodo ) );
     dispatch( setIsDraggingTodo(false) );
   }
 
-  if (todosByStatus.length === 0) return null; 
   
   return (
     <div onDrop={onDropTodo} onDragOver={onDragOver} >
