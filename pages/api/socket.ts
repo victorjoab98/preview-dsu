@@ -13,7 +13,7 @@ export default function SocketHandler(req:any, res:any) {
   res.socket.server.io = io;
 
   const onConnection = (socket: any) => {
-    handleMessage(socket)
+    handleMessage(socket,io)
   };
 
   // Define actions inside

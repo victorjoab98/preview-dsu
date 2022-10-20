@@ -20,16 +20,16 @@ export const saveTodoThunk = (description: string): AppThunk => {
 }
 
 
-export const getTodosThunk = (): AppThunk => {
-    return async (dispatch, getState) => {
-        try {
-            const { data } = await api.get<ToDo[]>('/todos');
-            dispatch( getTodos(data) )
-        } catch (error) {
-            console.log('Error happend while trying to getTodos in frontend', error)
-        }
-    }
-}
+// export const getTodosThunk = (): AppThunk => {
+//     return async (dispatch, getState) => {
+//         try {
+//             const { data } = await api.get<ToDo[]>('/todos');
+//             dispatch( getTodos(data) )
+//         } catch (error) {
+//             console.log('Error happend while trying to getTodos in frontend', error)
+//         }
+//     }
+// }
 
 export const updateTodoStatusThunk = ( todo: ToDo): AppThunk => {
     return async (dispatch, getState) => {

@@ -3,10 +3,9 @@ import { db } from '../../database';
 
 import { MessageModel } from '../../models';
 
-export const handleMessage = (socket: any) => {
+export const handleMessage = (socket: any, io: any) => {
     const createMessage = async (payload: string) => {
         
-
         await db.connectToDatabase();
 
         const message = new MessageModel(payload);
@@ -15,7 +14,7 @@ export const handleMessage = (socket: any) => {
         
         await db.disconnectDatabase();
 
-        socket.emit('newMessage', payload);
+        io.emit('newMessage', payload);
     } 
 
     socket.on('createMessage', createMessage);

@@ -9,12 +9,11 @@ import { Message, User } from '../../interfaces/';
 
 import { MessageCard } from './';
 import { useAppSelector, useAppDispatch } from '../../store';
-import { addMessage, getChatThunk, removeMessages } from '../../store/slices/chat';
+import { addMessage, removeMessages } from '../../store/slices/chat';
 
 import style from './Chat.module.css';
 import { authAdmin, authUser } from '../../data/users';
 
-// let socket = io('http://localhost:8080/');
 
 let socket: any;
 
@@ -27,20 +26,18 @@ const ChatCard = () => {
   const dispatch = useAppDispatch();
   const scroll = useRef<HTMLDivElement>();
 
+  
   useEffect(() => {
-    initialSocket()
+    initialSocket();
   }, []);
 
-  useEffect(() => {
-    dispatch( getChatThunk() )
-  }, []);
-  
+
   const initialSocket = async () => {
     await fetch('/api/socket');
     socket = io();
 
     socket.on('newMessage', (payload: Message) => {
-      dispatch( addMessage( payload ) )
+      dispatch( addMessage( payload ) );
     })
   }
   
@@ -54,7 +51,7 @@ const ChatCard = () => {
       status: 'active'
     }
 
-    socket.broadcast.emit('createMessage', newMessage)
+    io().emit('createMessage', newMessage)
     setInputValue('');
 
     scroll.current?.scrollIntoView({ behavior: 'smooth', block: 'end' });
