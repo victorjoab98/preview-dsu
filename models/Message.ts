@@ -3,6 +3,28 @@ import { Message } from '../interfaces';
 
 export interface IMessage extends Message {}
 
+/**
+ * @swagger
+ * components:
+ *   schemas:
+ *     Message:
+ *       type: object
+ *       properties:
+ *         text:
+ *           type: string
+ *           description: The text of the message.
+ *           example: Hi Team! How are you?
+ *         user:
+ *           $ref: '#/components/schemas/User'
+ *         createdAt:
+ *           type: number
+ *           description: The date when the message was inserted in the database.
+ *           example: 1600000000000
+ *         status:
+ *           type: enum
+ *           enum: [ 'active', 'deleted' ]    
+ *           example: active
+ */
 const messageSchema = new Schema({
     text: { 
         type: String,

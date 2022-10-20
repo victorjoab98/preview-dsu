@@ -10,7 +10,44 @@ type Data =
 | ToDo [] 
 | { message: string }
 
-
+/**
+ * @swagger
+ * /api/todos:
+ *   get:
+ *     summary: Get all the ToDos from the database
+ *     description: This endpoint returns all the ToDos from the database in an array.s
+ *     responses:
+ *       200:
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 $ref: '#/components/schemas/ToDo'
+ *   post:
+ *     summary: Create a new ToDo
+ *     description: Adds a new ToDo to the database
+ *     requestBody:
+ *       description: This endpoint only requires the description of the ToDo, 
+ *                    the rest of the fields are set by the server.
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               description:
+ *                 type: string
+ *                 description: The description of the activity to do.
+ *                 example: I have to do the laundry.
+ *     responses:
+ *       200:
+ *         description: Message was added to the database successfully.
+ *         content:
+ *          application/json:
+ *           schema:
+ *            $ref: '#/components/schemas/ToDo'
+ *     
+ */
 export default function handler( req: NextApiRequest, res: NextApiResponse<Data> ) {
     switch( req.method ){
         case 'GET': 

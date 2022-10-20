@@ -19,10 +19,12 @@
     "js-cookie": "^3.0.1",
     "mongoose": "^6.6.5",
     "next": "12.3.1",
+    "next-swagger-doc": "^0.3.6",
     "notistack": "^2.0.5",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-redux": "^8.0.4",
+    "swagger-ui-react": "^4.14.3",
     "socket.io": "^4.5.3",
     "socket.io-client": "^4.5.3"
   },

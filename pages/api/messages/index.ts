@@ -11,6 +11,37 @@ type Data =
 | any
 
 
+/**
+ * @swagger
+ * /api/messages:
+ *   get:
+ *     summary: Get all the messages from the database
+ *     description: Returns all the messages from the database
+*     responses:
+ *       200:
+ *         description: All the messages were returned successfully.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 $ref: '#/components/schemas/Message'
+ *   delete:
+ *     summary: Delete all the messages from the database.
+ *     description: Deletes all the messages from the database
+ *     responses:
+ *       200:
+ *         description: All the messages were deleted successfully.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                message: 
+ *                  type: string
+ *                  description: The message that the messages were deleted successfully.
+ *                  example: Messages deleted successfully
+ */
 export default function handler( req: NextApiRequest, res: NextApiResponse<Data> ) {
     switch( req.method ){
         case 'GET': 
