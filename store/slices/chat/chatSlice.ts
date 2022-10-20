@@ -21,8 +21,11 @@ export const chatSlice = createSlice({
         getChat: (state, action: PayloadAction<Message[]>) => {
             state.messages = action.payload
         },
-        removeMessages: (state, action: PayloadAction<[]>) => {  
-            state.messages = action.payload;
+        removeMessages: (state, action: PayloadAction<'deleted'>) => {  
+            state.messages = state.messages.map( message => ({
+                ...message,
+                status: action.payload
+            }))
         },
     }
 });

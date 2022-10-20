@@ -1,5 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
-import { authAdmin, authUser } from '../../data/users';
+import { authUser } from '../../data/users';
 import { db } from '../../database';
 import { Message } from '../../interfaces';
 import { MessageModel } from '../../models';
@@ -29,16 +29,16 @@ const getTodosAndMessages = async ( res: NextApiResponse<Data> ) => {
 
         await db.connectToDatabase();
 
-        authAdmin.role === 'USER_ROLE'
+        authUser.role === 'USER_ROLE'
            ? messages = await MessageModel.find({status: 'active'}).populate('user')
            : messages = await MessageModel.find().populate('user');
         
-        authAdmin.role === 'USER_ROLE'
+        authUser.role === 'USER_ROLE'
            ? todos = await ToDoModel.find({ user:  authUser._id }).sort({createdAt: 'descending'}).populate('user')
            : todos = await ToDoModel.find().sort({createdAt: 'descending'}).populate('user');
 
         await db.disconnectDatabase();
-
+        
         return res.status(200).json({ todos, messages });
 
     } catch (error) {

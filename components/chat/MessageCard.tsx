@@ -3,7 +3,7 @@ import { Box, Typography } from '@mui/material'
 import styles from './Chat.module.css';
 import { getDistanceNow } from '../../utils/';
 import { Message } from '../../interfaces';
-import { authUser, authAdmin } from '../../data/users';
+import { authUser } from '../../data/users';
 
 interface Props {
   recentMessage: Message
@@ -20,6 +20,7 @@ const MessageCard = ({ recentMessage }: Props) => {
     <Box 
       className={ styles.chat__container__message }
       sx={ stylesValidations() ? { marginLeft: 'auto'} : {}}
+      style={ authUser.role === 'ADMIN_ROLE' && recentMessage.status === 'deleted' ? { opacity: '.5' } : {}}
     >
       <Typography 
         variant='subtitle2' 

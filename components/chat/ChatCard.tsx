@@ -9,10 +9,10 @@ import { Message } from '../../interfaces/';
 
 import { MessageCard } from './';
 import { useAppSelector, useAppDispatch } from '../../store';
-import { addMessage, removeMessages } from '../../store/slices/chat';
+import { addMessage, remoteChatThunk } from '../../store/slices/chat';
 
 import style from './Chat.module.css';
-import { authAdmin, authUser } from '../../data/users';
+import { authUser } from '../../data/users';
 import { getAppDataThunk } from '../../store/slices/generalThunks';
 
 
@@ -76,7 +76,7 @@ const ChatCard = () => {
   
   const onDelete = () => {
     if ( confirm('Do you want to delete the whole conversation?')) {
-      dispatch( removeMessages([]) )
+      dispatch( remoteChatThunk() )
       setTouched(false);
     } 
   }
@@ -99,11 +99,13 @@ const ChatCard = () => {
             />
           }
           action={
-            <IconButton
-              onClick={ onDelete }
-            >
-              <DeleteForeverOutlined />
-            </IconButton>
+            authUser.role === 'ADMIN_ROLE' && (
+              <IconButton
+                onClick={ onDelete }
+              >
+                <DeleteForeverOutlined />
+              </IconButton>  
+            )
           }
           title='MONGO DB'
           subheader='DSU chat team'

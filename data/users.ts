@@ -41,16 +41,18 @@ export const users : User[] =
     name: 'Jaime Tuyuc',
     email: 'jaime@gmail.com',
     password: '1234',
+    // role: 'ADMIN_ROLE',
     role: 'USER_ROLE',
     status: true  
 }
 
 
- export const authAdmin = {
-    _id: '634f1a0283a505369ee20da9',
-    name: 'Victor Morales',
-    email: 'victor@gmail.com',
-    password: '1234',
-    role: 'ADMIN_ROLE',
-    status: true  
-} 
+// export const authUser = {
+//     _id: '634f1a0283a505369ee20da9',
+//     name: 'Victor Morales',
+//     email: 'victor@gmail.com',
+//     password: '1234',
+//     role: 'ADMIN_ROLE',
+//     // role: 'USER_ROLE',
+//     status: true  
+// }
