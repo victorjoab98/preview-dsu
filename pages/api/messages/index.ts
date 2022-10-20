@@ -25,7 +25,7 @@ const getMessages = async ( res: NextApiResponse<Data> ) => {
 
         await db.connectToDatabase();
         // this authentication is going to be with JWT in the request
-        authAdmin.role === 'USER_ROLE'
+        authUser.role === 'USER_ROLE'
            ? messages = await MessageModel.find({status: 'active'}).populate('user')
            : messages = await MessageModel.find().populate('user');
         

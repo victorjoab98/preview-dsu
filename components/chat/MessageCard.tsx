@@ -13,7 +13,7 @@ const MessageCard = ({ recentMessage }: Props) => {
 
   
   const stylesValidations = () => {
-    return authAdmin._id === recentMessage.user._id 
+    return authUser._id === recentMessage.user._id 
   }
 
   return (

@@ -46,6 +46,10 @@ const ChatCard = () => {
     }
     
     initialSocket();
+
+    return () => {
+      socket.off('newMessage')
+    }
   }, []);
   
   const onSave = async ( e: any ) => {
@@ -54,7 +58,7 @@ const ChatCard = () => {
     const newMessage: any = {
       createdAt: Date.now(),
       text: inputValue,
-      user: authAdmin,
+      user: authUser,
       status: 'active'
     }
     
