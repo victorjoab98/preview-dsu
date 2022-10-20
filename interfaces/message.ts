@@ -1,7 +1,8 @@
 import { User } from "./user";
 
+
+
 export interface Message {
-    id: number;
     text: string;
     createdAt: number;
     status: statusType;

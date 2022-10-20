@@ -1,15 +1,22 @@
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
+
+import io from 'socket.io-client';
 
 import {  Box, Card, CardContent, CardHeader, CardMedia, IconButton, TextField } from '@mui/material';
 import { DeleteForeverOutlined, SendOutlined } from '@mui/icons-material';
 
-import { ReduxMessage } from '../../interfaces/';
+import { Message, User } from '../../interfaces/';
 
 import { MessageCard } from './';
 import { useAppSelector, useAppDispatch } from '../../store';
-import { addMessage, removeMessages } from '../../store/slices/chat';
+import { addMessage, getChatThunk, removeMessages } from '../../store/slices/chat';
 
 import style from './Chat.module.css';
+import { authAdmin, authUser } from '../../data/users';
+
+// let socket = io('http://localhost:8080/');
+
+let socket: any;
 
 const ChatCard = () => {
 
@@ -20,21 +27,34 @@ const ChatCard = () => {
   const dispatch = useAppDispatch();
   const scroll = useRef<HTMLDivElement>();
 
+  useEffect(() => {
+    initialSocket()
+  }, []);
+
+  useEffect(() => {
+    dispatch( getChatThunk() )
+  }, []);
+  
+  const initialSocket = async () => {
+    await fetch('/api/socket');
+    socket = io();
+
+    socket.on('newMessage', (payload: Message) => {
+      dispatch( addMessage( payload ) )
+    })
+  }
+  
   const onSave = ( ) => {
     if ( !inputValue.trim() ) return;
 
-    const data: ReduxMessage = {
-      id: Date.now(),
+    const newMessage: any = {
       createdAt: Date.now(),
       text: inputValue,
-      user: {
-        email: 'test@gmail.com',
-        id: 1,
-        name: 'kunjo lee'
-      }
+      user: authUser,
+      status: 'active'
     }
 
-    dispatch( addMessage( data ) );
+    socket.broadcast.emit('createMessage', newMessage)
     setInputValue('');
 
     scroll.current?.scrollIntoView({ behavior: 'smooth', block: 'end' });
@@ -84,8 +104,8 @@ const ChatCard = () => {
           className={ style.chat__custom__scrollbar}
           > 
             {
-              messages.map( message => (
-                <MessageCard key={ message.id } recentMessage={ message }/>
+              messages.map( (message,i) => (
+                <MessageCard key={ i } recentMessage={ message }/>
               ))
             }
           <Box ref={ scroll } />

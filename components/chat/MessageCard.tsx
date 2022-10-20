@@ -2,22 +2,18 @@ import { Box, Typography } from '@mui/material'
 
 import styles from './Chat.module.css';
 import { getDistanceNow } from '../../utils/';
-import { ReduxMessage, User } from '../../interfaces';
+import { Message } from '../../interfaces';
+import { authUser, authAdmin } from '../../data/users';
 
 interface Props {
-  recentMessage: ReduxMessage
+  recentMessage: Message
 }
 
 const MessageCard = ({ recentMessage }: Props) => {
 
-  const authUser: User = {
-    id: 1,
-    name: 'Kunjo',
-    email: 'kunjo@gamil.com'
-  }
   
   const stylesValidations = () => {
-    return authUser.id === recentMessage.user.id 
+    return authUser._id === recentMessage.user._id 
   }
 
   return (

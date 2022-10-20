@@ -9,7 +9,6 @@ type Data =
 | ToDo
 | ToDo [] 
 | { message: string }
-| any
 
 
 export default function handler( req: NextApiRequest, res: NextApiResponse<Data> ) {
@@ -31,7 +30,7 @@ const getTodos = async ( res: NextApiResponse<Data> ) => {
         await db.connectToDatabase();
 
         authAdmin.role === 'USER_ROLE'
-           ? todos = await ToDoModel.find({ user:  authUser.id }).sort({createdAt: 'descending'}).populate('user')
+           ? todos = await ToDoModel.find({ user:  authUser._id }).sort({createdAt: 'descending'}).populate('user')
            : todos = await ToDoModel.find().sort({createdAt: 'descending'}).populate('user');
         
         await db.disconnectDatabase();
@@ -54,7 +53,7 @@ const getTodos = async ( res: NextApiResponse<Data> ) => {
         
         const todo = new ToDoModel({ 
             description,  
-            user: authAdmin.id,
+            user: authAdmin._id,
             createdAt: Date.now()
         })        
 

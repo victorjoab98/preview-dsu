@@ -3,41 +3,23 @@ import { Message, ReduxMessage, User } from '../../../interfaces';
 
 
 interface InitialState {
-    messages: ReduxMessage[];
+    messages: Message[];
 }
 
 
 const initialState: InitialState = {
-    messages: [
-        {
-            createdAt: 1665714566735,
-            id: 5,
-            text: 'que tal todos',
-            user: {
-                id: 2,
-                email: 'v@gmail.com',
-                name: 'Victor morales'
-            }
-        },
-        {
-            createdAt: 1665714566735,
-            id: 8,
-            text: 'Morning team!!!',
-            user: {
-                id: 3,
-                email: 'ja@gmail.com',
-                name: 'Jaime'
-            },
-        },
-    ]
+    messages: []
 }
 
 export const chatSlice = createSlice({
     name: 'chat',
     initialState,
     reducers: {
-        addMessage: (state, action: PayloadAction<ReduxMessage>) => {
+        addMessage: (state, action: PayloadAction<Message>) => {
             state.messages = [...state.messages, action.payload];
+        },
+        getChat: (state, action: PayloadAction<Message[]>) => {
+            state.messages = action.payload
         },
         removeMessages: (state, action: PayloadAction<[]>) => {  
             state.messages = action.payload;
@@ -45,4 +27,4 @@ export const chatSlice = createSlice({
     }
 });
 
-export const { addMessage, removeMessages } = chatSlice.actions;
+export const { getChat,addMessage, removeMessages } = chatSlice.actions;
