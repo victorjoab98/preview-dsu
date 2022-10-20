@@ -21,11 +21,16 @@ export const TodoList:FC<Props> = ({status}) => {
   const onDragOver = (e: React.DragEvent<HTMLDivElement>) => {
     e.preventDefault();
   }
-
+  
   const onDropTodo = (e: React.DragEvent<HTMLDivElement>) => {
+
     const id = e.dataTransfer.getData('text/plain');
     const todo = todos.find( todo => todo._id === id )!;
     const updateTodo = { ...todo, status: status };
+
+    console.log('el status', status)
+    console.log(updateTodo)
+
     dispatch( updateTodoStatusThunk( updateTodo ) );
     dispatch( setIsDraggingTodo(false) );
   }

@@ -1,19 +1,21 @@
-import { useEffect } from 'react';
+import { useEffect } from "react";
 
 import { Card, CardHeader, Grid } from "@mui/material"
-import { useAppDispatch } from '../../store';
-import { getTodosThunk } from '../../store/slices/todos/thunks';
+
+import { getAppDataThunk } from "../../store/slices/generalThunks";
+import { useAppDispatch } from '../../store/hooks';
 
 import { NewTodo } from "./NewTodo"
 import { TodoList } from "./TodoList"
 
 const TodoDashboard = () => {
-    const dispatch = useAppDispatch();        
 
+    const dispatch = useAppDispatch();
+    
     useEffect(() => {
-        dispatch(getTodosThunk())
-    }, [])
-
+        dispatch(getAppDataThunk())
+      }, []);
+      
   return (
     <Grid container spacing={2}>
         <Grid item xs={12} sm={4} >

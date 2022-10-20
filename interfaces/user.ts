@@ -1,5 +1,5 @@
 export interface User{
-    id: number;
+    _id: string;
     name: string;
     email: string;
     password: string;
@@ -8,4 +8,4 @@ export interface User{
 }
 
 
-type userRole = 'ADMIN_ROLE' | 'USER_ROLE';
+export type userRole = 'ADMIN_ROLE' | 'USER_ROLE';

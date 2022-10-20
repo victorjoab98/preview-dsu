@@ -1,30 +1,62 @@
-import { NextApiRequest, NextApiResponse } from 'next';
+import type { NextApiRequest, NextApiResponse } from 'next';
+import { authUser } from '../../../data/users';
+import { db } from '../../../database';
 import { Message } from '../../../interfaces';
-import { messages } from '../../../data/messages';
-import { MeetingRoom } from '@mui/icons-material';
+import { MessageModel } from '../../../models';
 
 type Data = 
 | Message[]
+| Message
 | { message: string }
+| any
 
-let messagesNow = messages;
 
 export default function handler( req: NextApiRequest, res: NextApiResponse<Data> ) {
     switch( req.method ){
-        case 'GET':
-            return getMessages(res)
-        case 'DELETE':
-            return deleteMessages(res)
+        case 'GET': 
+            return getMessages( res )
+        case 'DELETE': 
+            return deleteMessages( req, res )
         default:
             return res.status(400).json({ message: 'Invalid method' })
     }
 }
 
-function deleteMessages(res: NextApiResponse<Data>){
-    messagesNow = [];
-    return res.status(200).json( { message: 'The messages were deleted.'} );
+const getMessages = async ( res: NextApiResponse<Data> ) => {
+    try {
+        let messages;
+
+        await db.connectToDatabase();
+        // this authentication is going to be with JWT in the request
+        authUser.role === 'USER_ROLE'
+           ? messages = await MessageModel.find({status: 'active'}).populate('user')
+           : messages = await MessageModel.find().populate('user');
+        
+        await db.disconnectDatabase();
+
+        return res.status(200).json(messages);
+
+    } catch (error) {
+        console.log(error);
+
+        res.status(500).json({ message: 'something went wrong while trying to get messages' })
+    }
 }
 
-function getMessages(res: NextApiResponse<Data>){
-    return res.status(200).json( messagesNow );
+
+const deleteMessages = async ( req: NextApiRequest, res: NextApiResponse<Data>) => {
+    try {
+        await db.connectToDatabase();
+
+        await MessageModel.updateMany({ status: 'deleted' } ).populate('user')
+
+        await db.disconnectDatabase();
+        
+        return res.status(200).json( { message: 'Messages deleted successfully'} );
+
+
+    }catch(error){
+        console.error(error);
+        res.status(500).json({ message: 'Something went wrong while trying to delete Messages' })
+    }
 }

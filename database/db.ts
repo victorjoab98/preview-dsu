@@ -1,41 +1,52 @@
-import moongose from 'mongoose';
+import mongoose from 'mongoose';
 
-// 0 = disconnected
-// 1 = connected
-// 2 = connecting
-// 3 = disconnecting
+/**
+* 0 = disconnected
+* 1 = connected
+* 2 = connecting
+* 3 = disconnecting
+*/
 
-const mongoConnections = {
-    isConnected: 0
+const mongoConnection = {
+  isConnected: 0
 }
 
-export const connectToDatabase = async () => {
-    if (mongoConnections.isConnected) {
-        console.log('Using existing database connection');
-        return;
+export const connectToDatabase = async () => {  
+
+  if ( mongoConnection.isConnected ) {    
+    console.log('We were connected already');
+    return;
+  } 
+  
+  if ( mongoose.connections.length > 0 ) {   
+    // Si hay mas conexiones, obtener la primera conexion, y el estado actual en la que esa conexion esta
+    mongoConnection.isConnected = mongoose.connections[0].readyState;    
+
+    if ( mongoConnection.isConnected === 1 ) { 
+      console.log('using previous connection');
+      return;
     }
 
-    if( moongose.connections.length > 0 ) {
-        mongoConnections.isConnected = moongose.connections[0].readyState;
-        
-        if (mongoConnections.isConnected === 1) {
-            console.log('Using existing database connection');
-            return;
-        }
+    // evitar tener muchas conexiones simultaneas
+    await mongoose.disconnect();
+  }
 
-        await moongose.disconnect();
-    }
+  await mongoose.connect(process.env.MONGODB_URL || '' );  
+  mongoConnection.isConnected = 1;
 
-    await moongose.connect( process.env.MONGODB_URL || '' );
-    mongoConnections.isConnected = 1;
-    console.log('Using new database connection');
+  console.log('Connected to MongoDB:', process.env.MONGODB_URL)
 }
+
 
 export const disconnectDatabase = async () => {
-    if (mongoConnections.isConnected === 0) {
-        return;
-    }
-    mongoConnections.isConnected = 0;
-    console.log('Database connection closed');
-    await moongose.disconnect();
+
+  if (process.env.NODE_ENV === 'development') return;
+  if (mongoConnection.isConnected === 0) return;  
+
+  await mongoose.disconnect();  
+  mongoConnection.isConnected = 0;
+
+  console.log('Disconnected from mongo');
+
 }
+
