@@ -16,8 +16,7 @@ export const chatSlice = createSlice({
     initialState,
     reducers: {
         addMessage: (state, action: PayloadAction<Message>) => {
-            console.log('how many times do you join here', action.payload)
-            state.messages = [...state.messages, action.payload];
+            state.messages = [...state.messages, action.payload]
         },
         getChat: (state, action: PayloadAction<Message[]>) => {
             state.messages = action.payload

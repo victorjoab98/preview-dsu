@@ -1,22 +1,10 @@
-import { useEffect } from 'react';
-
 import { Grid } from '@mui/material';
-
-import { useAppDispatch } from '../store/hooks';
 
 import { ChatCard } from '../components/chat/';
 import { AppLayout } from '../components/layouts';
 import { TodoDashboard } from '../components/todos';
-import { getAppDataThunk } from '../store/slices/generalThunks';
 
 export default function Home() {
-
-  const dispatch = useAppDispatch();
-  
-  useEffect(() => {
-    console.log('cuantas veces te ejecutas?')
-    dispatch( getAppDataThunk() )
-  }, []);
 
   return (
     <AppLayout title='Osono' pageDescription='DSU Todo & Chat Application '>

@@ -7,16 +7,12 @@ import { getTodos } from "./todos";
 export const getAppDataThunk = (): AppThunk => {
     return async (dispatch, getState) => {
         try {
-            const { data: dataTodos } = await api.get<ToDo[]>('/todos');
-            const { data: dataMessages } = await api.get<Message[]>('/messages');
-
-
-            console.log(dataTodos)
-            console.log(dataMessages)
-
-            dispatch( getTodos(dataTodos) );
-            dispatch( getChat(dataMessages) );
-
+            
+            const { data } = await api.get<{todos: ToDo[], messages: Message[]}>('/general');
+            const { todos, messages} = data;
+            
+            dispatch( getTodos(todos) );
+            dispatch( getChat(messages) );
         } catch (error) {
             console.log('Error happend while trying to get Messages and todos in frontend', error)
         }
