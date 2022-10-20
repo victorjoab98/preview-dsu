@@ -1,4 +1,3 @@
-import { Socket } from 'socket.io';
 import { db } from '../../database';
 
 import { MessageModel } from '../../models';
@@ -6,14 +5,14 @@ import { MessageModel } from '../../models';
 export const handleMessage = (socket: any, io: any) => {
     const createMessage = async (payload: string) => {
         
-        await db.connectToDatabase();
+        console.log('what do you receive', payload)
+        // await db.connectToDatabase();
 
-        const message = new MessageModel(payload);
+        // const message = new MessageModel(payload);
 
-        await message.save();
+        // await message.save();
         
-        await db.disconnectDatabase();
-
+        // await db.disconnectDatabase();
         io.emit('newMessage', payload);
     } 
 

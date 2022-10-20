@@ -51,9 +51,9 @@ const ChatCard = () => {
       status: 'active'
     }
 
-    io().emit('createMessage', newMessage)
-    setInputValue('');
+    io().emit('createMessage', newMessage);
 
+    setInputValue('');
     scroll.current?.scrollIntoView({ behavior: 'smooth', block: 'end' });
   }
 
