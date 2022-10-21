@@ -91,7 +91,7 @@ export const seedData: SeedData = {
             description: 'connecting to mongoDB with mongoose',
             createdAt: Date.now(),
             status: 'Done',
-            user: KunjoUser
+            user: JaimeUser
         },
         {
             description: 'Implementing redis',
