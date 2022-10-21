@@ -52,7 +52,6 @@ export default function handler( req: NextApiRequest, res: NextApiResponse<Data>
     switch( req.method ){
         case 'GET': 
             return getTodos( res )
-
         case 'POST':
             return createTodo( req, res );
         default:
@@ -63,7 +62,6 @@ export default function handler( req: NextApiRequest, res: NextApiResponse<Data>
 const getTodos = async ( res: NextApiResponse<Data> ) => {
     try {
         let todos;
-
         await db.connectToDatabase();
 
         authUser.role === 'USER_ROLE'
@@ -100,7 +98,7 @@ const getTodos = async ( res: NextApiResponse<Data> ) => {
 
         await db.disconnectDatabase();
     
-        return res.status(200).json(todo);
+        return res.status(201).json(todo);
 
     } catch (error) {
         console.log(error);
