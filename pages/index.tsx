@@ -1,11 +1,9 @@
 import { Grid } from '@mui/material';
-
 import { ChatCard } from '../components/chat/';
 import { AppLayout } from '../components/layouts';
 import { TodoDashboard } from '../components/todos';
 
 export default function Home() {
-
   return (
     <AppLayout title='Osono' pageDescription='DSU Todo & Chat Application '>
       <Grid container spacing={2}>
