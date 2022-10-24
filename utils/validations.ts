@@ -12,6 +12,6 @@ export const isValidEmail = (email: string): boolean => {
   export const isEmail = (email: string): string | undefined => {
     return isValidEmail(email) 
       ? undefined
-      : 'Invalid email';
+      : 'Invalid email. Please write a correct format email';
   }
   
