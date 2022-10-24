@@ -109,7 +109,8 @@ const Sidebar = () => {
                             <PersonOutlined
                                 sx={{ height: 100, width: 100 }}
                             />
-                        </ListItemIcon>                    
+                        </ListItemIcon> 
+                        {/* TODO: User name with redux */}
                         <ListItemText>USER_NAME</ListItemText>
                     </ListItem>
                     <Divider/>

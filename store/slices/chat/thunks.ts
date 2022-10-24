@@ -6,7 +6,7 @@ import { getChat, removeMessages } from './chatSlice';
 
 export const getChatThunk = (): AppThunk => {
     return async (dispatch, getState) => {
-        try {
+        try { 
             const { data } = await api.get<Message[]>('/messages');
             dispatch( getChat(data) );
         } catch (error) {

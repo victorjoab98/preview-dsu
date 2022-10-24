@@ -2,8 +2,6 @@ import mongoose, { Model, Schema } from 'mongoose';
 
 import { User } from '../interfaces';
 
-export interface IUser extends User { }
-
 /**
  * @swagger
  * components:
@@ -33,8 +31,14 @@ export interface IUser extends User { }
  *         status:
  *           type: boolean
  *           description: The status of the user.
- *           example: true   
+ *           example: true  
+ *         google:
+ *           type: boolean
+ *           description: Google define if my user is authenticated with google auth.
+ *                        By default its value is false which means when it is true
+ *                        It is using google auth. False means that it is not using google auth
  */
+
 const userSchema = new Schema({
     name: {
         type: String,
@@ -54,12 +58,16 @@ const userSchema = new Schema({
         required: true,
         enum: ['ADMIN_ROLE','USER_ROLE']
     },
+    google:{
+        type: Boolean,
+        default: false
+    },
     status: {
         type: Boolean,
         default: true
     }
 });
 
-const UserModel: Model<IUser> = mongoose.models.User || mongoose.model('User', userSchema);
+const UserModel: Model<User> = mongoose.models.User || mongoose.model('User', userSchema);
 
 export default UserModel;

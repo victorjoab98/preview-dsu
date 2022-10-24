@@ -1,5 +1,7 @@
 import type { AppProps } from 'next/app';
 import { Provider } from 'react-redux';
+import { GoogleOAuthProvider } from '@react-oauth/google';
+
 import { SnackbarProvider } from 'notistack';
 
 import { CssBaseline } from '@mui/material';
@@ -11,14 +13,16 @@ import { PageProvider } from '../components/ui/';
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
-    <Provider store = { store } >
-      <PageProvider>
-      <SnackbarProvider maxSnack={3}>
-          <CssBaseline />
-          <Component {...pageProps} />
-        </SnackbarProvider>
-      </PageProvider>
-    </Provider>
+    <GoogleOAuthProvider clientId={process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID || ''}>
+      <Provider store = { store } >
+        <PageProvider>
+        <SnackbarProvider maxSnack={3}>
+            <CssBaseline />
+            <Component {...pageProps} />
+          </SnackbarProvider>
+        </PageProvider>
+      </Provider>
+    </GoogleOAuthProvider>
   )
 }
 

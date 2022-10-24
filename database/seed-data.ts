@@ -1,7 +1,10 @@
+import bcrypt from 'bcryptjs'
+
 import { Message, User } from '../interfaces';
 import { ToDo } from '../interfaces/todo';
 
 interface SeedUser extends Omit<User, '_id' | 'id'> {
+    // TODO: i won't use this _id in the future once the auth is done
     _id: string
 }
 
@@ -14,16 +17,16 @@ interface SeedMessage extends Omit<Message, '_id' | 'user' | 'id'> {
 }
 
 interface SeedData {
-    todos?: SeedTodo[];
+    todos: SeedTodo[];
     users: SeedUser[];
-    messages?: SeedMessage[];
+    messages: SeedMessage[];
 }
 
 const KunjoUser: SeedUser = {
     _id: '634f1a0283a505369ee20da8',
     name: 'Kunjo Lee',
     email: 'kunjo@gmail.com',
-    password: '1234',
+    password: bcrypt.hashSync('1234'),
     role: 'ADMIN_ROLE',
     status: true  
 }
@@ -32,7 +35,7 @@ const VictorUser: SeedUser = {
     _id: '634f1a0283a505369ee20da9',
     name: 'Victor Morales',
     email: 'victor@gmail.com',
-    password: '1234',
+    password: bcrypt.hashSync('1234'),
     role: 'ADMIN_ROLE',
     status: true  
 }
@@ -41,7 +44,7 @@ const JaimeUser: SeedUser = {
     _id: '634f1a0283a505369ee20daa',
     name: 'Jaime Tuyuc',
     email: 'jaime@gmail.com',
-    password: '1234',
+    password: bcrypt.hashSync('1234'),
     role: 'USER_ROLE',
     status: true  
 }
@@ -50,7 +53,7 @@ const MarcelaUser: SeedUser = {
     _id: '634f1a0283a505369ee20dad',
     name: 'Marcela Obeso',
     email: 'marcela@gmail.com',
-    password: '1234',
+    password: bcrypt.hashSync('1234'),
     role: 'USER_ROLE',
     status: true  
 }
@@ -59,7 +62,7 @@ const ChamaleUser: SeedUser ={
     _id: '634f1a0283a505369ee20dab',
     name: 'Victor Chamale',
     email: 'chamale@gmail.com',
-    password: '1234',
+    password: bcrypt.hashSync('1234'),
     role: 'USER_ROLE',
     status: true  
 }
@@ -68,7 +71,7 @@ const CristianUser: SeedUser = {
     _id: '634f1a0283a505369ee20dac',
     name: 'Cristian Monroy',
     email: 'cristian@gmail.com',
-    password: '1234',
+    password: bcrypt.hashSync('1234'),
     role: 'USER_ROLE',
     status: true  
 }

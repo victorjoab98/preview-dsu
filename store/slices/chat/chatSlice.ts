@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { Message, ReduxMessage, User } from '../../../interfaces';
+import { Message, User } from '../../../interfaces';
 
 
 interface InitialState {

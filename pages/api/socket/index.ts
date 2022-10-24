@@ -1,5 +1,5 @@
 import { Server } from 'socket.io';
-import { handleMessage } from '../../utils/sockets/';
+import { handleMessage } from '../../../utils/sockets';
 
 export default function SocketHandler(req:any, res:any) {
   // It means that socket server was already initialised

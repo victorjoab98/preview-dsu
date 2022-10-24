@@ -1,3 +1,8 @@
+:root {
+    --main-color: #e56564;
+    --custom-white: #F9F8F8;
+}
+
 @media screen and (max-witdh: 600px) {
     .responsive-block {
         display: none;

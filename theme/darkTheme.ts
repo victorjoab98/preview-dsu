@@ -6,6 +6,9 @@ export const darkTheme = createTheme({
         mode: 'dark',
         primary: {
           main: '#fff'
+        },
+        secondary: {
+          main: '#e56564'
         }
     },
     components: {
