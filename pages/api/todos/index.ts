@@ -41,7 +41,7 @@ type Data =
  *                 example: I have to do the laundry.
  *     responses:
  *       200:
- *         description: Message was added to the database successfully.
+ *         description: ToDo was added to the database successfully.
  *         content:
  *          application/json:
  *           schema:
