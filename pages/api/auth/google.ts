@@ -3,6 +3,7 @@ import { IAuth } from '../../../interfaces';
 import { UserModel } from '../../../models';
 import { googleVerify } from '../../../utils/auth';
 import bcrypt from 'bcryptjs';
+import { db } from '../../../database';
 
 type Data =
  | { message: string}
@@ -25,8 +26,12 @@ const googleSignIn = async (req: NextApiRequest, res: NextApiResponse<Data>) => 
     try {
         const { name, email } = await googleVerify( google_token );
 
+        await db.connectToDatabase();
+    
         let user = await UserModel.findOne({ email });
         
+        console.log('que traes', user);
+
         if (!user) {
             // This means if the user doesn't exist already in my DB i'm going to create a new user 
             const data = {
@@ -40,6 +45,8 @@ const googleSignIn = async (req: NextApiRequest, res: NextApiResponse<Data>) => 
             user = new UserModel(data);
             await user.save();
         };
+
+        await db.disconnectDatabase();
 
         if (!user.status){
             // if the user is disabled (status: false)
