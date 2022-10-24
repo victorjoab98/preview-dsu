@@ -1,10 +1,12 @@
+import { useState } from "react";
+
 import { Box, Button, TextField } from "@mui/material"
 import AddBoxIcon from '@mui/icons-material/AddBox';
 import SaveIcon from '@mui/icons-material/Save';
-import { useState } from "react";
-import { addTodo } from "../../store/slices/todos";
-import { buildNewTodo } from "../../store/slices/todos/helpers";
+
 import { useAppDispatch, useAppSelector } from "../../store";
+
+import { saveTodoThunk } from "../../store/slices/todos";
 import { setIsAddingTodo } from "../../store/slices/ui";
 
 export const NewTodo = () => {
@@ -21,8 +23,8 @@ export const NewTodo = () => {
       return;
     }
 
-    dispatch( addTodo( buildNewTodo( description, 2 ) ) );
-    dispatch(setIsAddingTodo(false))
+    dispatch( saveTodoThunk(description) );
+    dispatch( setIsAddingTodo(false) )
     setDescription('');
   }
 

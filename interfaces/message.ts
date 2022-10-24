@@ -1,14 +1,15 @@
 import { User } from "./user";
 
+
+
 export interface Message {
-    id: number;
     text: string;
-    createdAt: Date;
+    createdAt: number;
+    status: 'active' | 'deleted';
     user: User;
 } 
 
-
-
+// TODO: delete this interface
 export interface ReduxMessage extends Omit <Message, 'createdAt'> {
     createdAt: number;
 }

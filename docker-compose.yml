@@ -1,0 +1,8 @@
+services:
+  mongoTeamDb:
+    image: mongo:5.0.0
+    container_name: dsu-app-db
+    ports:
+      - 27017:27017
+    volumes:
+      - ./mongo_volume:/data/db
