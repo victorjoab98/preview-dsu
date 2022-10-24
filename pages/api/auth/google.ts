@@ -1,7 +1,7 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import { IAuth } from '../../../interfaces';
 import { UserModel } from '../../../models';
-import { googleVerify } from '../../../utils/auth';
+import { googleVerify, jwt } from '../../../utils/auth';
 import bcrypt from 'bcryptjs';
 import { db } from '../../../database';
 
@@ -56,6 +56,7 @@ const googleSignIn = async (req: NextApiRequest, res: NextApiResponse<Data>) => 
         }
 
         // TODO: generate jwt token
+        const token = jwt.signToken(user._id, user.role);
 
         res.status(200).json({
             ok: true,
@@ -65,7 +66,7 @@ const googleSignIn = async (req: NextApiRequest, res: NextApiResponse<Data>) => 
                 email: user.email,
                 role: user.role
             },
-            token: 'Here a JWT! Peding'
+            token
         });
 
     } catch (error) {
