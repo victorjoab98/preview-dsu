@@ -58,7 +58,7 @@ export const ModalTodo: React.FC<Props> = ({todo, show, setShow}) => {
             vertical: 'top',
             horizontal: 'left'
         }
-    });
+      });
     }
   }
 

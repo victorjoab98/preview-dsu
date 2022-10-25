@@ -6,3 +6,8 @@ export interface IAuth {
     user: User,
     token: string;
 }
+
+export interface AuthGlobal {
+    isLoggedIn: boolean;
+    user: User | null;
+}

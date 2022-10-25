@@ -4,6 +4,7 @@ import { chatSlice } from './slices/chat';
 import { openMenuSlice, todoDashboard } from './slices/ui';
 import { todosSlice } from './slices/todos/todosSlice';
 import { themeSlice } from './slices/ui/theme';
+import { authSlice } from './slices/auth';
 
 export const store = configureStore({
     reducer: {
@@ -11,7 +12,8 @@ export const store = configureStore({
         todoDashboard: todoDashboard.reducer,
         chat: chatSlice.reducer,
         todos: todosSlice.reducer,
-        theme: themeSlice.reducer 
+        theme: themeSlice.reducer,
+        auth: authSlice.reducer,
     }
 });
 

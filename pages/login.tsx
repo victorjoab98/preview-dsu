@@ -1,11 +1,18 @@
+import { useState } from 'react';
+import { useRouter } from 'next/router';
+
 import { Box, Button, Card, CardActions, CardContent, CardMedia, Chip, CircularProgress, Divider, TextField, Typography } from '@mui/material'
+import { ErrorOutline } from '@mui/icons-material';
+
 import { GoogleLogin, CredentialResponse } from '@react-oauth/google';
 import { useForm } from 'react-hook-form';
-import { useRouter } from 'next/router';
-import { useState } from 'react';
+import Cookies from 'js-cookie';
+
 import { api } from '../api';
 import { isEmail } from '../utils';
-import { ErrorOutline } from '@mui/icons-material';
+import { IAuth } from '../interfaces';
+import { setLogin } from '../store/slices/auth';
+import { useAppDispatch } from '../store';
 
 type FormData = {
   email: string;
@@ -19,30 +26,40 @@ const LoginPage = () => {
   const [ loginError, setLoginError ] = useState( false );
   const [ errorMessage, setErrorMessage ] = useState('');
   const [ loading, setLoading ] = useState( false );
+  const dispatch = useAppDispatch();
 
   const handleSuccess = async (credentialResponse: CredentialResponse) => {
+
     try {
       
-      const { data } = await api.post('/auth/google', { google_token: credentialResponse.credential });
+      const { data } = await api.post<IAuth>('/auth/google', { google_token: credentialResponse.credential });
 
-      console.log('data ', data)
-
-    } catch (error) {
+      const { user, token } = data; 
+      Cookies.set('token', token);
       
-      console.log('errrr a ver', error)
-    }
-
+      dispatch(setLogin({ isLoggedIn: true, user: user }))
+      
+    } catch (error) {
+      Cookies.remove('token')
+      console.log('Google Auth Error', error);
+    }  
   }
-
+  
   const onLoginUser = async ( { email, password }: FormData ) => {
     
     try {
       setLoading( true );
       setLoginError( false );
-      const { data } = await api.post('/auth/login', { email, password });
-      console.log('data ', data)
+      const { data } = await api.post<IAuth>('/auth/login', { email, password });
 
+      const { user, token } = data; 
+
+      Cookies.set('token', token);
+      
+      dispatch(setLogin({ isLoggedIn: true, user: user }))
+      
     } catch (error: any) {
+      Cookies.remove('token');
       setErrorMessage(error.response.data.message || 'Error with login. Try again later');
       setLoginError( true ); 
 
@@ -52,7 +69,7 @@ const LoginPage = () => {
   }
 
 
-  return (
+   return (
     <Box 
       height='100vh' 
       color='default'
@@ -92,11 +109,10 @@ const LoginPage = () => {
         </CardContent>
         <Divider sx={{width:'100%', marginY: '2rem'}} >or</Divider>
         <Chip
-          sx={{ width: '75%', marginBottom: '1rem', display: loginError ? 'flex' : 'none'  }}
+          sx={{ width: '75%', marginBottom: '2rem', display: loginError ? 'flex' : 'none'  }}
           label={ errorMessage }
           color='error'
           icon={ <ErrorOutline/> }
-          className="fadeIn"
           />
         <form onSubmit={handleSubmit(onLoginUser)} noValidate>
           <TextField
@@ -119,7 +135,7 @@ const LoginPage = () => {
             error={ !!errors.password }
             helperText={ errors.password ? errors.password.message : 'Insert your password.' }
           />
-          <CardActions sx={{ my: '1rem', justifyContent: 'space-between' }}>
+          <CardActions sx={{ my: '1rem', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
             <Button type="submit" color='secondary'>Continue</Button>
             <CircularProgress sx={{ display: loading ? 'flex' : 'none' }}/>
           </CardActions>
@@ -127,7 +143,6 @@ const LoginPage = () => {
 
         <Box display='flex' alignItems='center' justifyContent='center'>
           <Typography variant='subtitle2'>Not have an account yet?</Typography>
-          {/* onClick={()=> navigate('/create-user')} */}
           <Button sx={{ paddingLeft: '3px'}} color='secondary' onClick={ ()=> router.push('/create-user') }>click here</Button>
         </Box>
         
