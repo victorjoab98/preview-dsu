@@ -53,20 +53,20 @@ export default function handler( req: NextApiRequest, res: NextApiResponse<Data>
     }
 }
 
-const getMessages = async ( req: NextApiRequest, res: NextApiResponse<Data> ) => {
+export const getMessages = async ( req: NextApiRequest, res: NextApiResponse<Data> ) => {
     const { token = ''} = req.cookies as { token: string }
 
     try {
         let messages;
 
-        const userId = await jwt.verifyJWT( token )
+        const userId = await jwt.verifyJWT( token );
 
         if (!userId) {
-            return res.status(400).json({ message: 'Token no valid, take a look at your cookies '})
+            return res.status(400).json({ message: 'Token no valid, take a look at your cookies'});
         }
         
         await db.connectToDatabase();
-
+        
         const authUser = await UserModel.findOne({ _id: userId });
         
         if (!authUser) {
@@ -74,17 +74,18 @@ const getMessages = async ( req: NextApiRequest, res: NextApiResponse<Data> ) =>
         }
 
         authUser.role === 'USER_ROLE'
-           ? messages = await MessageModel.find({status: 'active'}).populate('user')
-           : messages = await MessageModel.find().populate('user');
+        ? messages = await MessageModel.find({status: 'active'}).populate('user')
+        : messages = await MessageModel.find().populate('user');
         
         await db.disconnectDatabase();
 
         return res.status(200).json(messages);
 
     } catch (error) {
-        console.log(error);
+        console.log('estas en catch?')
+        // console.log(error);
 
-        res.status(500).json({ message: 'something went wrong while trying to get messages' })
+        res.status(500).json({ message: 'something went wrong while trying to get messages' });
     }
 }
 

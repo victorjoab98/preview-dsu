@@ -18,11 +18,14 @@ export const verifyJWT = ( token: string ): Promise<string> => {
             jwt.verify( token, process.env.JWT_SECRET_KEY || '', (err, payload) => {
 
             // the paylaod is my token data (what I sign while creating my JWT)
-              if ( err ) return reject('Invalid JWT');
+              if ( err ) {
+                resolve('');
+              }else {
+                  const { _id } = payload as { _id: string };
+    
+                  resolve(_id);
 
-              const { _id } = payload as { _id: string };
-
-              resolve(_id);
+              }
 
             })
         } catch (error) {
