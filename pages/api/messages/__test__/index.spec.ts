@@ -40,64 +40,41 @@ describe('messages controllers', () => {
             
         });
 
+    it('Shold return 500 status when user not founded ', async () => {
 
+        // verifyJWT siempre retorna 123456
+        (verifyJWT as any).mockImplementationOnce( () => '123456' );
 
-        it('Shold return 500 status when user not founded ', async () => {
-
-            // verifyJWT siempre retorna 123456
+        // findOne en esta prueba siempre retorna null;
+        (UserModel.findOne as any).mockImplementationOnce(() => null);
+        
+        const { req, res } = createMocks({ method: 'GET' });
+        
+        await getMessages( req, res)
+        
+        expect(res._getStatusCode()).toBe(500);
+        
+        expect(res._getJSONData()).toEqual(
+            expect.objectContaining({ message: 'User not founded'})
+            );
+        })
+        
+        it('should return User messages with the USER_ROLE', async () => {
             (verifyJWT as any).mockImplementationOnce( () => '123456' );
-
-            // findOne en esta prueba siempre retorna null;
-            (UserModel.findOne as any).mockImplementationOnce(() => null);
             
-            const { req, res } = createMocks({ method: 'GET' });
+            (UserModel.findOne as any).mockImplementationOnce(() => ({
+                _id: "63584c723c2d5fc7dce97ea2",
+                name: "Test 1",
+                email: "test@gmail.com",
+                password: "$2a$10$zPauG59AXkKLza04oYeBHu7K0Q/IMcgYJdge8Kph4TOKr5jOZ.Lj.",
+                role: "USER_ROLE",
+                google: true,
+                status: true,
+                __v: 0
+            }));
             
-            await getMessages( req, res)
-            
-            expect(res._getStatusCode()).toBe(500);
-            
-            expect(res._getJSONData()).toEqual(
-                expect.objectContaining({ message: 'User not founded'})
-                );
-            })
-            
-            it('should return User messages with the USER_ROLE', async () => {
-                (verifyJWT as any).mockImplementationOnce( () => '123456' );
-                
-                (UserModel.findOne as any).mockImplementationOnce(() => ({
-                    _id: "63584c723c2d5fc7dce97ea2",
-                    name: "Test 1",
-                    email: "test@gmail.com",
-                    password: "$2a$10$zPauG59AXkKLza04oYeBHu7K0Q/IMcgYJdge8Kph4TOKr5jOZ.Lj.",
-                    role: "USER_ROLE",
-                    google: true,
-                    status: true,
-                    __v: 0
-                }));
-                
-                (MessageModel.find as any).mockImplementationOnce(() => ({
-                    populate: jest.fn().mockReturnValue([
-                        {
-                            _id: "63584cc03c2d5fc7dce97ebb",
-                            text: "myUser test",
-                            createdAt: 1666731200365,
-                            status: "active",
-                            user: {
-                                _id: "63584caa3c2d5fc7dce97ead",
-                                email: "out@gmail.com",
-                                google: false,
-                                __v: 0
-                            },
-                            __v: 0
-                        },
-                    ])
-                }));
-                
-                const { req, res } = createMocks({ method: 'GET' });
-                
-                await getMessages( req, res);
-                
-                expect( res._getJSONData() ).toEqual([
+            (MessageModel.find as any).mockImplementationOnce(() => ({
+                populate: jest.fn().mockReturnValue([
                     {
                         _id: "63584cc03c2d5fc7dce97ebb",
                         text: "myUser test",
@@ -111,24 +88,45 @@ describe('messages controllers', () => {
                         },
                         __v: 0
                     },
-                ]);
-                
-                expect(res._getStatusCode()).toBe(200);
-            });        
+                ])
+            }));
             
-            it('should handle error', async () => {
-                (verifyJWT as any).mockImplementationOnce( () => {
-                    throw new Error()
-                });
-                const { req, res } = createMocks({ method: 'GET' });
-                
-                await getMessages( req, res);
-                
-                expect( res._getJSONData()).toEqual(
-                    expect.objectContaining({ message: 'something went wrong while trying to get messages'})
-                );
+            const { req, res } = createMocks({ method: 'GET' });
+            
+            await getMessages( req, res);
+            
+            expect( res._getJSONData() ).toEqual([
+                {
+                    _id: "63584cc03c2d5fc7dce97ebb",
+                    text: "myUser test",
+                    createdAt: 1666731200365,
+                    status: "active",
+                    user: {
+                        _id: "63584caa3c2d5fc7dce97ead",
+                        email: "out@gmail.com",
+                        google: false,
+                        __v: 0
+                    },
+                    __v: 0
+                },
+            ]);
+            
+            expect(res._getStatusCode()).toBe(200);
+        });        
+        
+        it('should handle error', async () => {
+            (verifyJWT as any).mockImplementationOnce( () => {
+                throw new Error()
+            });
+            const { req, res } = createMocks({ method: 'GET' });
+            
+            await getMessages( req, res);
+            
+            expect( res._getJSONData()).toEqual(
+                expect.objectContaining({ message: 'something went wrong while trying to get messages'})
+            );
 
-                expect(res._getStatusCode()).toBe(500);  
-            })
-        });
+            expect(res._getStatusCode()).toBe(500);  
+        })
     });
+});
