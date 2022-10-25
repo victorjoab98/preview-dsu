@@ -1,9 +1,8 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import { db } from '../../database';
 import { Message } from '../../interfaces';
-import { MessageModel, UserModel } from '../../models';
+import { MessageModel, UserModel, ToDoModel } from '../../models';
 
-import { ToDoModel } from '../../models';
 import { ToDo } from '../../interfaces';
 import { jwt } from '../../utils/auth/';
 

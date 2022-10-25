@@ -47,6 +47,7 @@ const Sidebar = () => {
 
     const onLogOut = () => {
         dispatch( setLogout() );
+        dispatch( setOpenMenu( false ) );
         Cookies.remove('token');
         router.push('/login')
     }
@@ -84,7 +85,7 @@ const Sidebar = () => {
                     </NextLink>
                     <NextLink href='/todo' passHref>
                         <Link>
-                            <ListItem button>
+                            <ListItem button onClick={() => dispatch( setOpenMenu( false ) )}>
                                 <ListItemIcon>
                                     <TaskAltOutlined />
                                 </ListItemIcon>                    
@@ -94,7 +95,7 @@ const Sidebar = () => {
                     </NextLink>
                     <NextLink href='/messages' passHref>
                         <Link>
-                            <ListItem button>
+                            <ListItem button onClick={() => dispatch( setOpenMenu( false ))}>
                                 <ListItemIcon>
                                     <ForumOutlined />
                                 </ListItemIcon>                    
