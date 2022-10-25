@@ -4,7 +4,8 @@ import { UserModel } from '../../../models';
 import { IAuth } from '../../../interfaces';
 import { db } from '../../../database';
 import bcrypt from 'bcryptjs';
-import { validations } from '../../../utils';
+import { isValidEmail } from '../../../utils';
+import { jwt } from '../../../utils/auth/';
 
 type Data = 
 | IAuth
@@ -84,7 +85,7 @@ const createUser = async ( req: NextApiRequest, res:NextApiResponse<Data> ) => {
             })
         }
         
-        if ( !validations.isValidEmail( email ) ) {
+        if ( !isValidEmail( email ) ) {
             
             return res.status(400).json({
                 message: 'Invalid email'
@@ -94,7 +95,6 @@ const createUser = async ( req: NextApiRequest, res:NextApiResponse<Data> ) => {
         await db.connectToDatabase();
         
         const user = await UserModel.findOne({ email})
-        
         
         if ( user ) {
             await db.disconnectDatabase();
@@ -120,15 +120,18 @@ const createUser = async ( req: NextApiRequest, res:NextApiResponse<Data> ) => {
 
         const { _id, role } = newUser;
 
+        const token = jwt.signToken(_id, role);
+
         return res.status(200).json({
             message: 'User saved successfully',
             ok: true,
-            token: 'HEREEE the token',
             user: {
+                _id,
                 name,
                 email,
                 role
-            }
+            },
+            token,
         });
         
     } catch (error) {

@@ -30,8 +30,6 @@ const googleSignIn = async (req: NextApiRequest, res: NextApiResponse<Data>) => 
     
         let user = await UserModel.findOne({ email });
         
-        console.log('que traes', user);
-
         if (!user) {
             // This means if the user doesn't exist already in my DB i'm going to create a new user 
             const data = {
@@ -62,6 +60,7 @@ const googleSignIn = async (req: NextApiRequest, res: NextApiResponse<Data>) => 
             ok: true,
             message: 'successfully authenticated with google',
             user: {
+                _id: user._id,
                 name: user.name,
                 email: user.email,
                 role: user.role

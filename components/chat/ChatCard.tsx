@@ -12,7 +12,6 @@ import { useAppSelector, useAppDispatch } from '../../store';
 import { addMessage, remoteChatThunk } from '../../store/slices/chat';
 
 import style from './Chat.module.css';
-import { authUser } from '../../data/users';
 import { getAppDataThunk } from '../../store/slices/generalThunks';
 
 
@@ -25,10 +24,11 @@ const ChatCard = () => {
   const { messages } = useAppSelector(state => state.chat );
   const dispatch = useAppDispatch();
   const scroll = useRef<HTMLDivElement>();
-  
+  const { user } = useAppSelector( state => state.auth.auth);
   
   useEffect(() => {
     dispatch(getAppDataThunk());
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   
   
@@ -50,6 +50,7 @@ const ChatCard = () => {
     return () => {
       socket.off('newMessage')
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   
   const onSave = async ( e: any ) => {
@@ -58,7 +59,7 @@ const ChatCard = () => {
     const newMessage: any = {
       createdAt: Date.now(),
       text: inputValue,
-      user: authUser,
+      user,
       status: 'active'
     }
     
@@ -99,7 +100,7 @@ const ChatCard = () => {
             />
           }
           action={
-            authUser.role === 'ADMIN_ROLE' && (
+            user?.role === 'ADMIN_ROLE' && (
               <IconButton
                 onClick={ onDelete }
               >

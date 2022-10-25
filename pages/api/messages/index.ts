@@ -1,8 +1,8 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
-import { authUser } from '../../../data/users';
 import { db } from '../../../database';
 import { Message } from '../../../interfaces';
-import { MessageModel } from '../../../models';
+import { MessageModel, UserModel } from '../../../models';
+import { jwt } from '../../../utils/auth';
 
 type Data = 
 | Message[]
@@ -45,7 +45,7 @@ type Data =
 export default function handler( req: NextApiRequest, res: NextApiResponse<Data> ) {
     switch( req.method ){
         case 'GET': 
-            return getMessages( res )
+            return getMessages( req, res )
         case 'DELETE': 
             return deleteMessages( req, res )
         default:
@@ -53,12 +53,26 @@ export default function handler( req: NextApiRequest, res: NextApiResponse<Data>
     }
 }
 
-const getMessages = async ( res: NextApiResponse<Data> ) => {
+const getMessages = async ( req: NextApiRequest, res: NextApiResponse<Data> ) => {
+    const { token = ''} = req.cookies as { token: string }
+
     try {
         let messages;
 
+        const userId = await jwt.verifyJWT( token )
+
+        if (!userId) {
+            return res.status(400).json({ message: 'Token no valid, take a look at your cookies '})
+        }
+        
         await db.connectToDatabase();
-        // this authentication is going to be with JWT in the request
+
+        const authUser = await UserModel.findOne({ _id: userId });
+        
+        if (!authUser) {
+            return res.status(500).json({ message: 'User not founded'})
+        }
+
         authUser.role === 'USER_ROLE'
            ? messages = await MessageModel.find({status: 'active'}).populate('user')
            : messages = await MessageModel.find().populate('user');
