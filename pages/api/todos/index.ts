@@ -1,9 +1,9 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
-import { ToDoModel } from '../../../models';
+import { ToDoModel, UserModel } from '../../../models';
 
 import { ToDo } from '../../../interfaces';
-import { authUser } from '../../../data/users';
 import { db } from '../../../database';
+import { jwt } from '../../../utils/auth';
 
 type Data = 
 | ToDo
@@ -51,7 +51,7 @@ type Data =
 export default function handler( req: NextApiRequest, res: NextApiResponse<Data> ) {
     switch( req.method ){
         case 'GET': 
-            return getTodos( res )
+            return getTodos( req, res )
         case 'POST':
             return createTodo( req, res );
         default:
@@ -59,12 +59,23 @@ export default function handler( req: NextApiRequest, res: NextApiResponse<Data>
     }
 }
 
-const getTodos = async ( res: NextApiResponse<Data> ) => {
+const getTodos = async ( req: NextApiRequest, res: NextApiResponse<Data> ) => {
+    const { token = ''} = req.cookies as { token: string }
+
     try {
         let todos;
+
+        const userId = await jwt.verifyJWT( token )
+
+        if (!userId) {
+            return res.status(400).json({ message: 'Token no valid, take a look at your cookies '})
+        }
+        
         await db.connectToDatabase();
 
-        authUser.role === 'USER_ROLE'
+        const authUser = await UserModel.findOne({ _id: userId });
+
+        authUser?.role === 'USER_ROLE'
            ? todos = await ToDoModel.find({ user:  authUser._id }).sort({createdAt: 'descending'}).populate('user')
            : todos = await ToDoModel.find().sort({createdAt: 'descending'}).populate('user');
         
@@ -81,14 +92,25 @@ const getTodos = async ( res: NextApiResponse<Data> ) => {
 
 
  const createTodo = async ( req: NextApiRequest, res:NextApiResponse<Data> ) => {
+    const { token = ''} = req.cookies as { token: string }
+
     try {
         const { description='' } = req.body;
 
-        await db.connectToDatabase();
+
+        const userId = await jwt.verifyJWT( token )
+
+        if (!userId) {
+            return res.status(400).json({ message: 'Token no valid, take a look at your cookies '})
+        }
         
+        await db.connectToDatabase();
+
+        const authUser = await UserModel.findOne({ _id: userId });
+
         const todo = new ToDoModel({ 
             description,  
-            user: authUser._id,
+            user: authUser?._id,
             createdAt: Date.now()
         })        
 

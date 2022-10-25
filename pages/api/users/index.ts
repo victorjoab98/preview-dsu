@@ -126,6 +126,7 @@ const createUser = async ( req: NextApiRequest, res:NextApiResponse<Data> ) => {
             message: 'User saved successfully',
             ok: true,
             user: {
+                _id,
                 name,
                 email,
                 role

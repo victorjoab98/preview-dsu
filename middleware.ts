@@ -26,22 +26,23 @@ export async function middleware(request: NextRequest) {
             
         } catch( error ){
             console.log('error in middleware', error);
-            
+
             request.cookies.clear();
             return NextResponse.redirect(new URL('/login', request.url))
         }   
 
     } else if (request.nextUrl.pathname.includes('/login')) {
+        
         if (myJWT) {
-
+            // If you are authenticated. then go to home page
             try {
-                console.log('eras token valido?')
                 await jwtVerify(myJWT, new TextEncoder().encode(process.env.JWT_SECRET_KEY || ""));
                 return NextResponse.redirect(new URL('/', request.url))
                 
             } catch( error ){
-                console.log('eras token invalido?')
+                // if not, continue in login
                 request.cookies.clear();
+                
                 console.log('error in middleware', error)
             }   
         }
@@ -49,8 +50,6 @@ export async function middleware(request: NextRequest) {
 
     NextResponse.next();
 }
-
-
 
 export const config = {
     matcher: ['/', '/todo', '/messages', '/general', '/login'],

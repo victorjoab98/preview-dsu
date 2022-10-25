@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-import { Box, Button, Card, CardActions, CardContent, CardMedia, Chip, CircularProgress, Divider, TextField, Typography } from '@mui/material'
+import { Box, Button, Card, CardActions, CardContent, CardMedia, Chip, CircularProgress, TextField, Typography } from '@mui/material'
 import { useForm } from 'react-hook-form'
 import Cookies from 'js-cookie';
 
@@ -10,6 +10,7 @@ import { IAuth } from '../interfaces';
 import { ErrorOutline } from '@mui/icons-material';
 import { useAppDispatch } from '../store';
 import { setLogin } from '../store/slices/auth';
+import { useRouter } from 'next/router';
 
 type FormData = {
   name:     string
@@ -18,12 +19,13 @@ type FormData = {
 };
 
 const CreateUserPage = () => {
-  const { register, handleSubmit, formState: { errors } } = useForm<FormData>();
+  const { register, handleSubmit, formState: { errors }, reset } = useForm<FormData>();
   const [showError, setShowError] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
   const [loading, setLoading] = useState(false);
   const dispatch = useAppDispatch();
 
+  const router = useRouter()
 
   const onSave = async ( { name, email, password }: FormData ) => {
     setShowError( false );
@@ -36,7 +38,10 @@ const CreateUserPage = () => {
       Cookies.set('token', token);
       
       dispatch(setLogin({ isLoggedIn: true, user: user }));
+ 
+      router.push('/');
 
+      reset();
     } catch (error: any) { 
 
       console.log('Credential errors',error);

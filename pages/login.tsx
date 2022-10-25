@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 
 import { Box, Button, Card, CardActions, CardContent, CardMedia, Chip, CircularProgress, Divider, TextField, Typography } from '@mui/material'
@@ -22,11 +22,12 @@ type FormData = {
 const LoginPage = () => {
 
   const router = useRouter();
-  const { register, handleSubmit, formState: { errors } } = useForm<FormData>();
+  const { register, handleSubmit, formState: { errors }, reset } = useForm<FormData>();
   const [ loginError, setLoginError ] = useState( false );
   const [ errorMessage, setErrorMessage ] = useState('');
   const [ loading, setLoading ] = useState( false );
   const dispatch = useAppDispatch();
+
 
   const handleSuccess = async (credentialResponse: CredentialResponse) => {
 
@@ -36,8 +37,10 @@ const LoginPage = () => {
 
       const { user, token } = data; 
       Cookies.set('token', token);
-      
+
       dispatch(setLogin({ isLoggedIn: true, user: user }))
+      
+      router.push('/');
       
     } catch (error) {
       Cookies.remove('token')
@@ -51,18 +54,21 @@ const LoginPage = () => {
       setLoading( true );
       setLoginError( false );
       const { data } = await api.post<IAuth>('/auth/login', { email, password });
-
+      
       const { user, token } = data; 
-
+      
       Cookies.set('token', token);
       
       dispatch(setLogin({ isLoggedIn: true, user: user }))
       
+      router.push('/');
+      reset();
+
     } catch (error: any) {
       Cookies.remove('token');
       setErrorMessage(error.response.data.message || 'Error with login. Try again later');
       setLoginError( true ); 
-
+      
     } finally {
       setLoading( false );
     }

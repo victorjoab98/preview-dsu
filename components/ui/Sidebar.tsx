@@ -1,7 +1,8 @@
 import NextLink from 'next/link';
 
 import { Box, CardMedia, Divider, Drawer, List, ListItem, ListItemIcon, ListItemText, ListSubheader, Typography, Link } from '@mui/material';
-import Cookie from 'js-cookie';
+
+import Cookie from 'js-cookie'
 
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
 import { setOpenMenu, changeTheme } from '../../store/slices/ui';
@@ -14,15 +15,22 @@ import {
     PersonOutlined,
     CopyrightOutlined,
     GroupsOutlined,
+    LogoutOutlined,
 } from '@mui/icons-material';
+import Cookies from 'js-cookie';
+import { setLogout } from '../../store/slices/auth';
+import { useRouter } from 'next/router';
 
 
 const Sidebar = () => {
 
     const dispatch = useAppDispatch();
     const { isOpen } = useAppSelector( state => state.openMenu);
+    const { user } = useAppSelector( state => state.auth.auth);
     const { mode } = useAppSelector( state => state.theme);
     
+    const router = useRouter();
+
     const handleTheme = () => {
         
         if (mode === 'light') {
@@ -36,6 +44,13 @@ const Sidebar = () => {
         }
     }
     
+
+    const onLogOut = () => {
+        dispatch( setLogout() );
+        Cookies.remove('token');
+        router.push('/login')
+    }
+
     return (
         <Drawer
             anchor='left'
@@ -95,6 +110,13 @@ const Sidebar = () => {
                         <ListItemText>Theme</ListItemText>
                     </ListItem>
 
+                    <ListItem button onClick={ onLogOut }>
+                        <ListItemIcon>
+                            <LogoutOutlined />
+                        </ListItemIcon>                    
+                        <ListItemText>LogOut</ListItemText>
+                    </ListItem>
+
                     <ListSubheader>Teams</ListSubheader>
                     <Divider/>
                     
@@ -110,8 +132,7 @@ const Sidebar = () => {
                                 sx={{ height: 100, width: 100 }}
                             />
                         </ListItemIcon> 
-                        {/* TODO: User name with redux */}
-                        <ListItemText>USER_NAME</ListItemText>
+                        <ListItemText>{user?.name || 'no name available'}</ListItemText>
                     </ListItem>
                     <Divider/>
                     <Box flex={ 1 }/>

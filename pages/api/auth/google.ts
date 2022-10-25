@@ -60,6 +60,7 @@ const googleSignIn = async (req: NextApiRequest, res: NextApiResponse<Data>) => 
             ok: true,
             message: 'successfully authenticated with google',
             user: {
+                _id: user._id,
                 name: user.name,
                 email: user.email,
                 role: user.role

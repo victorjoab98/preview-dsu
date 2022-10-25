@@ -36,15 +36,15 @@ export const users : User[] =
         }
     ]
 
- export const authUser = {
-    _id: '634f1a0283a505369ee20daa',
-    name: 'Jaime Tuyuc',
-    email: 'jaime@gmail.com',
-    password: '1234',
-    // role: 'ADMIN_ROLE',
-    role: 'USER_ROLE',
-    status: true  
-}
+//  export const authUser = {
+//     _id: '634f1a0283a505369ee20daa',
+//     name: 'Jaime Tuyuc',
+//     email: 'jaime@gmail.com',
+//     password: '1234',
+//     // role: 'ADMIN_ROLE',
+//     role: 'USER_ROLE',
+//     status: true  
+// }
 
 
 // export const authUser = {

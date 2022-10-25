@@ -1,26 +1,27 @@
 import { Box, Typography } from '@mui/material'
 
-import styles from './Chat.module.css';
+import { useAppSelector } from '../../store';
 import { getDistanceNow } from '../../utils/';
 import { Message } from '../../interfaces';
-import { authUser } from '../../data/users';
+
+import styles from './Chat.module.css';
 
 interface Props {
   recentMessage: Message
 }
 
 const MessageCard = ({ recentMessage }: Props) => {
-
+  const { user } = useAppSelector( state => state.auth.auth);
   
   const stylesValidations = () => {
-    return authUser._id === recentMessage.user._id 
+    return user?._id === recentMessage.user._id 
   }
 
   return (
     <Box 
       className={ styles.chat__container__message }
       sx={ stylesValidations() ? { marginLeft: 'auto'} : {}}
-      style={ authUser.role === 'ADMIN_ROLE' && recentMessage.status === 'deleted' ? { opacity: '.5' } : {}}
+      style={ user?.role === 'ADMIN_ROLE' && recentMessage.status === 'deleted' ? { opacity: '.5' } : {}}
     >
       <Typography 
         variant='subtitle2' 

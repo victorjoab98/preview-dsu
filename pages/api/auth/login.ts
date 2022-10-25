@@ -49,6 +49,7 @@ const login = async (req: NextApiRequest, res: NextApiResponse<Data>) => {
             ok: true,
             message: 'Successfully authenticated user.',
             user: {
+                _id: user._id,
                 name: user.name,
                 email: user.email,
                 role: user.role
