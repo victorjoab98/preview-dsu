@@ -60,7 +60,6 @@ export const getMessages = async ( req: NextApiRequest, res: NextApiResponse<Dat
         let messages;
 
         const userId = await jwt.verifyJWT( token );
-        console.log('what do you say', userId)
         if (!userId) {
             return res.status(400).json({ message: 'Token no valid, take a look at your cookies'});
         }
