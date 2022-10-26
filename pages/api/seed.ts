@@ -24,8 +24,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
     
     await Promise.all([
       UserModel.insertMany( seedData.users),
-      MessageModel.insertMany( seedData.messages ),
-      ToDoModel.insertMany( seedData.todos ),
+      // MessageModel.insertMany( seedData.messages ),
+      // ToDoModel.insertMany( seedData.todos ),
     ]);
 
     await db.disconnectDatabase();

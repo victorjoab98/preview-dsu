@@ -1,0 +1,25 @@
+services:
+  app:
+    image: docker-nextjs-dev
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    ports:
+      - "3000:3000"
+    depends_on:
+      - mongo
+    volumes:
+      - ./:/app/
+      - /app/node_modules
+    environment:
+      - MONGODB_URL=mongodb://mongo:27017/dsu-app-db
+      - JWT_SECRET_KEY=JSAds230DFS0002DSDDVS
+      - NEXT_PUBLIC_GOOGLE_CLIENT_ID=708129975015-74ifrqc0mnuejhu104cunlivndt7dtjk.apps.googleusercontent.com
+      - NEXT_PUBLIC_GOOGLE_SECRET_ID=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
+  mongo:
+    image: mongo:5.0.0
+    container_name: dsu-app-db
+    ports:
+      - 27017:27017
+    volumes:
+      - ./mongo_volume:/data/db
