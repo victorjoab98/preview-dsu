@@ -68,7 +68,7 @@ export default function handler( req: NextApiRequest, res: NextApiResponse<Data>
     }
 }
 
-const createUser = async ( req: NextApiRequest, res:NextApiResponse<Data> ) => {
+export const createUser = async ( req: NextApiRequest, res:NextApiResponse<Data> ) => {
     try {
         const { name='', email='', password='' } = req.body as {email: string, password: string, name: string};
         

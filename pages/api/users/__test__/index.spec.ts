@@ -16,6 +16,15 @@ jest.mock('../../../../utils/auth/jwt', () => ({
 
 describe('User operation endpoints', () => {
 
+    describe('Test handler /api/users', () => {
+        it('should return a 400 and a message when method is not valid', async () => {
+            const { req, res } = createMocks({ method: 'PUT'});
+            await handlerUser(req, res);
+            expect(res._getStatusCode()).toBe(400);
+            expect(res._getJSONData()).toEqual({ message: 'Invalid method' });
+        });
+    });
+
     describe('Post /api/users', () => {
 
         it('should return a 400 and a message when password is less than 6 characters', async () => {
