@@ -1,10 +1,10 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
-import { db } from '../../database';
-import { Message } from '../../interfaces';
-import { MessageModel, UserModel, ToDoModel } from '../../models';
+import { db } from '../../../database';
+import { Message } from '../../../interfaces';
+import { MessageModel, UserModel, ToDoModel } from '../../../models';
 
-import { ToDo } from '../../interfaces';
-import { jwt } from '../../utils/auth/';
+import { ToDo } from '../../../interfaces';
+import { jwt } from '../../../utils/auth/';
 
 type Data = 
 | { todos: ToDo[], messages: Message[] }
@@ -21,15 +21,16 @@ export default function handler( req: NextApiRequest, res: NextApiResponse<Data>
     }
 }
 
-const getTodosAndMessages = async ( req:NextApiRequest, res: NextApiResponse<Data> ) => {
+export const getTodosAndMessages = async ( req:NextApiRequest, res: NextApiResponse<Data> ) => {
 
     const { token = ''} = req.cookies as { token: string }
-
+    
     try {
         let messages;
         let todos;
-
+        
         const userId = await jwt.verifyJWT( token )
+        console.log('lets test out', userId);
 
         if (!userId) {
             return res.status(400).json({ message: 'Token no valid, take a look at your cookies '})

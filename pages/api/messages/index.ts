@@ -60,7 +60,7 @@ export const getMessages = async ( req: NextApiRequest, res: NextApiResponse<Dat
         let messages;
 
         const userId = await jwt.verifyJWT( token );
-
+        console.log('what do you say', userId)
         if (!userId) {
             return res.status(400).json({ message: 'Token no valid, take a look at your cookies'});
         }
@@ -82,15 +82,14 @@ export const getMessages = async ( req: NextApiRequest, res: NextApiResponse<Dat
         return res.status(200).json(messages);
 
     } catch (error) {
-        console.log('estas en catch?')
-        // console.log(error);
+        console.log('Error in get Messages');
 
         res.status(500).json({ message: 'something went wrong while trying to get messages' });
     }
 }
 
 
-const deleteMessages = async ( req: NextApiRequest, res: NextApiResponse<Data>) => {
+export const deleteMessages = async ( req: NextApiRequest, res: NextApiResponse<Data>) => {
     try {
         await db.connectToDatabase();
 
@@ -102,7 +101,7 @@ const deleteMessages = async ( req: NextApiRequest, res: NextApiResponse<Data>) 
 
 
     }catch(error){
-        console.error(error);
+        console.log('There is an error');
         res.status(500).json({ message: 'Something went wrong while trying to delete Messages' })
     }
 }

@@ -1,7 +1,7 @@
-import { getMessages } from '../index';
+import messagesHandler, { getMessages, deleteMessages } from '../index';
 import { createMocks } from 'node-mocks-http';
 import { UserModel, MessageModel } from '../../../../models';
-import { connectToDatabase, disconnectDatabase } from '../../../../database/db';
+// import { connectToDatabase, disconnectDatabase } from '../../../../database/db';
 
 import { verifyJWT } from '../../../../utils/auth/jwt';
 
@@ -20,15 +20,36 @@ jest.mock('../../../../utils/auth/jwt', () => ({
 
 jest.mock('../../../../models');
 
+
 // Spy solo aplica propiedades a lo que ya existe, y las espia, para ver si fueron llamadas, etc.
 
 // Los mocks alteran todo el comportamiento, y yo decido la nueva funcionalidad, como crear de nuevo mi user model
 
 describe('messages controllers', () => {
+
+    describe('Handler Messages', () => {
+        it ('Shoud call getMessages when req.method is GET', () => {
+            const { req,res } = createMocks({ method: 'GET' });
+            
+
+            messagesHandler( req, res );
+
+        });
+
+        it ('Shoud call getMessages when req.method is GET', () => {
+            const { req,res } = createMocks({ method: 'DELETE' });
+            
+
+            messagesHandler( req, res );
+
+        });
+    });
+
     describe('getMessages', () => {
 
         it('should return 400 error when invalid token', async () => {
             // (verifyJWT as  any ).mockImplementationOnce(() => 'invalid')
+            (verifyJWT as jest.Mock).mockImplementationOnce(() => null);
             const { req, res } = createMocks({ method: 'GET', cookies: { token: 'my_fake_token' } });
 
             await getMessages(req,res);
@@ -40,62 +61,41 @@ describe('messages controllers', () => {
             
         });
 
-    it('Shold return 500 status when user not founded ', async () => {
+        it('Shold return 500 status when user not founded ', async () => {
 
-        // verifyJWT siempre retorna 123456
-        (verifyJWT as any).mockImplementationOnce( () => '123456' );
+            // verifyJWT siempre retorna 123456
+            (verifyJWT as jest.Mock).mockImplementationOnce( () => '123456' );
 
-        // findOne en esta prueba siempre retorna null;
-        (UserModel.findOne as any).mockImplementationOnce(() => null);
-        
-        const { req, res } = createMocks({ method: 'GET' });
-        
-        await getMessages( req, res)
-        
-        expect(res._getStatusCode()).toBe(500);
-        
-        expect(res._getJSONData()).toEqual(
-            expect.objectContaining({ message: 'User not founded'})
-            );
-        })
-        
-        it('should return User messages with the USER_ROLE', async () => {
-            (verifyJWT as any).mockImplementationOnce( () => '123456' );
-            
-            (UserModel.findOne as any).mockImplementationOnce(() => ({
-                _id: "63584c723c2d5fc7dce97ea2",
-                name: "Test 1",
-                email: "test@gmail.com",
-                password: "$2a$10$zPauG59AXkKLza04oYeBHu7K0Q/IMcgYJdge8Kph4TOKr5jOZ.Lj.",
-                role: "USER_ROLE",
-                google: true,
-                status: true,
-                __v: 0
-            }));
-            
-            (MessageModel.find as any).mockImplementationOnce(() => ({
-                populate: jest.fn().mockReturnValue([
-                    {
-                        _id: "63584cc03c2d5fc7dce97ebb",
-                        text: "myUser test",
-                        createdAt: 1666731200365,
-                        status: "active",
-                        user: {
-                            _id: "63584caa3c2d5fc7dce97ead",
-                            email: "out@gmail.com",
-                            google: false,
-                            __v: 0
-                        },
-                        __v: 0
-                    },
-                ])
-            }));
+            // findOne en esta prueba siempre retorna null;
+            (UserModel.findOne as jest.Mock).mockImplementationOnce(() => null);
             
             const { req, res } = createMocks({ method: 'GET' });
             
-            await getMessages( req, res);
+            await getMessages( req, res)
             
-            expect( res._getJSONData() ).toEqual([
+            expect(res._getStatusCode()).toBe(500);
+            
+            expect(res._getJSONData()).toEqual(
+                expect.objectContaining({ message: 'User not founded'})
+            );
+        })
+        
+    it('should return User messages with the USER_ROLE', async () => {
+        (verifyJWT as jest.Mock).mockImplementationOnce( () => '123456' );
+        
+        (UserModel.findOne as jest.Mock).mockImplementationOnce(() => ({
+            _id: "63584c723c2d5fc7dce97ea2",
+            name: "Test 1",
+            email: "test@gmail.com",
+            password: "$2a$10$zPauG59AXkKLza04oYeBHu7K0Q/IMcgYJdge8Kph4TOKr5jOZ.Lj.",
+            role: "USER_ROLE",
+            google: true,
+            status: true,
+            __v: 0
+        }));
+            
+        (MessageModel.find as jest.Mock).mockImplementationOnce(() => ({
+            populate: jest.fn().mockReturnValue([
                 {
                     _id: "63584cc03c2d5fc7dce97ebb",
                     text: "myUser test",
@@ -109,12 +109,34 @@ describe('messages controllers', () => {
                     },
                     __v: 0
                 },
-            ]);
+            ])
+        }));
             
-            expect(res._getStatusCode()).toBe(200);
+        const { req, res } = createMocks({ method: 'GET' });
+        
+        await getMessages( req, res);
+        
+        expect( res._getJSONData() ).toEqual([
+            {
+                _id: "63584cc03c2d5fc7dce97ebb",
+                text: "myUser test",
+                createdAt: 1666731200365,
+                status: "active",
+                user: {
+                    _id: "63584caa3c2d5fc7dce97ead",
+                    email: "out@gmail.com",
+                    google: false,
+                    __v: 0
+                },
+                __v: 0
+            },
+        ]);
+            
+        expect(res._getStatusCode()).toBe(200);
+
         });        
         
-        it('should handle error', async () => {
+        it('should handle getMessages error', async () => {
             (verifyJWT as any).mockImplementationOnce( () => {
                 throw new Error()
             });
@@ -128,5 +150,33 @@ describe('messages controllers', () => {
 
             expect(res._getStatusCode()).toBe(500);  
         })
+    });
+
+    describe('Delete messages', () => {
+        it('Should update messages status from active to deleted', async () => {
+            (MessageModel.updateMany as any).mockImplementationOnce(() => ({
+                populate: jest.fn().mockReturnValue('fake data deleted')
+            }));
+            
+            const { req,res } = createMocks({ method: 'DELETE' });
+
+            await deleteMessages(req,res);
+            expect(res._getJSONData()).toEqual(
+                expect.objectContaining({ message: 'Messages deleted successfully'})
+            );        
+        });
+
+        it('Should handle deleteMessages error', async () => {
+            (MessageModel.updateMany as any).mockImplementationOnce(() => {
+                throw new Error()
+            });
+
+            const { req, res } = createMocks({ method: 'DELETE' });
+            await deleteMessages( req, res );
+
+            expect(res._getJSONData()).toEqual((
+                expect.objectContaining({ message: 'Something went wrong while trying to delete Messages'})
+            ));
+        });
     });
 });

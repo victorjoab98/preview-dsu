@@ -19,7 +19,7 @@ export const verifyJWT = ( token: string ): Promise<string> => {
 
             // the paylaod is my token data (what I sign while creating my JWT)
               if ( err ) {
-                resolve('');
+                reject('Invalid token')
               }else {
                   const { _id } = payload as { _id: string };
     
