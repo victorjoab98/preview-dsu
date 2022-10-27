@@ -81,6 +81,9 @@ const updateTodo = async ( req: NextApiRequest, res: NextApiResponse<Data>) => {
         await db.connectToDatabase();
 
         const todo = await ToDoModel.findByIdAndUpdate( id, req.body, { new: true } ).populate('user');
+        if(!todo){
+            return res.status(404).json({ message: 'Todo not found' });
+        }
         await db.disconnectDatabase();
         return res.status(200).json( todo )
 
@@ -96,6 +99,9 @@ const deleteTodo = async ( req: NextApiRequest, res: NextApiResponse<Data>) => {
         await db.connectToDatabase();
 
         const todo = await ToDoModel.findByIdAndDelete( id ).populate('user');
+        if(!todo){
+            return res.status(404).json({ message: 'Todo not found' });
+        }
         await db.disconnectDatabase();
         return res.status(200).json( todo )
 
