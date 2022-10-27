@@ -148,6 +148,21 @@ describe('ToDo Get and Post endpoints', () => {
             await apiHandlerTodo(req, res);
             expect(res._getStatusCode()).toBe(201);
         });
+
+        it('shoult trigger a 500 when something went wrong', async () => {
+            const { req, res } = createMocks({ 
+                method: 'POST', 
+                body: { description: 'Connect mongoDB with mongoose'},  
+                cookies: { token: 'my_token' } 
+            });
+            (verifyJWT as jest.Mock).mockImplementationOnce(() => ({ id: '123456' }));
+            ( UserModel.findOne as jest.Mock ).mockImplementationOnce(() => { throw new Error('Something went wrong from test') });
+
+            await apiHandlerTodo(req, res);
+            expect(res._getStatusCode()).toBe(500);
+            expect(res._getJSONData()).toEqual({ message: 'something went wrong while trying to save todos' });
+        });
+
     });
 
 });

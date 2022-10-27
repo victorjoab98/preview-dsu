@@ -102,15 +102,15 @@ export const createUser = async ( req: NextApiRequest, res:NextApiResponse<Data>
         }
 
 
-        const newUser = new UserModel({
-            name,
-            email: email.toLowerCase(),
-            password: bcrypt.hashSync( password ),
-            role: 'USER_ROLE'
-        });
+        let newUser ;
 
         try {
-             await newUser.save({ validateBeforeSave: true });
+            newUser = await UserModel.create({
+                    name,
+                    email: email.toLowerCase(),
+                    password: bcrypt.hashSync( password ),
+                    role: 'USER_ROLE'
+                });           
         } catch (error) {
             console.log(error);
             return res.status(500).json({

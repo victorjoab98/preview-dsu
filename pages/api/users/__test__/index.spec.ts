@@ -86,6 +86,15 @@ describe('User operation endpoints', () => {
             }});
 
             ( signToken as jest.Mock ).mockImplementationOnce(() => 'fake_token');
+            ( UserModel.create as jest.Mock ).mockImplementationOnce(() => ({
+                message: 'User saved successfully',
+                ok: true,
+                user: {
+                    name: 'Victor',
+                    email : 'victor@email.com',
+                },
+                token: 'fake_token',
+            }));
             await handlerUser(req, res);
 
             expect(res._getStatusCode()).toBe(200);            
@@ -98,6 +107,22 @@ describe('User operation endpoints', () => {
                 },
                 token: 'fake_token',
             });
+        });
+
+        it('should throw an exeption when try to save user', async () => {
+            const { req, res } = createMocks({ method: 'POST', body: {
+                        name: 'Victor',
+                        email: 'victor@email.com',
+                        password: '123456'
+            }});
+
+            ( UserModel.create as jest.Mock ).mockImplementationOnce(() => {
+                throw new Error('Error');
+            });
+
+            await handlerUser(req, res);
+            expect(res._getStatusCode()).toBe(500);
+            expect(res._getJSONData().message).toBe('Something went wrong while trying to save the user');
         });
 
         it('should throw an exeption when something goes wrong', async () => {
