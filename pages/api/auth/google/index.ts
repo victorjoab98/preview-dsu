@@ -1,9 +1,9 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-import { IAuth } from '../../../interfaces';
-import { UserModel } from '../../../models';
-import { googleVerify, jwt } from '../../../utils/auth';
+import { IAuth } from '../../../../interfaces';
+import { UserModel } from '../../../../models';
+import { googleVerify, jwt } from '../../../../utils/auth';
 import bcrypt from 'bcryptjs';
-import { db } from '../../../database';
+import { db } from '../../../../database';
 
 type Data =
  | { message: string}
@@ -25,11 +25,10 @@ const googleSignIn = async (req: NextApiRequest, res: NextApiResponse<Data>) => 
 
     try {
         const { name, email } = await googleVerify( google_token );
-
+    
         await db.connectToDatabase();
     
         let user = await UserModel.findOne({ email });
-        
         if (!user) {
             // This means if the user doesn't exist already in my DB i'm going to create a new user 
             const data = {
@@ -39,9 +38,8 @@ const googleSignIn = async (req: NextApiRequest, res: NextApiResponse<Data>) => 
                 password: bcrypt.hashSync('nothing here:P'),
                 role: 'USER_ROLE',
             }
-                
-            user = new UserModel(data);
-            await user.save();
+            
+            user = await UserModel.create(data);
         };
 
         await db.disconnectDatabase();
@@ -53,7 +51,6 @@ const googleSignIn = async (req: NextApiRequest, res: NextApiResponse<Data>) => 
             })
         }
 
-        // TODO: generate jwt token
         const token = jwt.signToken(user._id, user.role);
 
         res.status(200).json({

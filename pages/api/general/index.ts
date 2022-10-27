@@ -1,10 +1,10 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
-import { db } from '../../database';
-import { Message } from '../../interfaces';
-import { MessageModel, UserModel, ToDoModel } from '../../models';
+import { db } from '../../../database';
+import { Message } from '../../../interfaces';
+import { MessageModel, UserModel, ToDoModel } from '../../../models';
 
-import { ToDo } from '../../interfaces';
-import { jwt } from '../../utils/auth/';
+import { ToDo } from '../../../interfaces';
+import { jwt } from '../../../utils/auth/';
 
 type Data = 
 | { todos: ToDo[], messages: Message[] }
@@ -21,14 +21,14 @@ export default function handler( req: NextApiRequest, res: NextApiResponse<Data>
     }
 }
 
-const getTodosAndMessages = async ( req:NextApiRequest, res: NextApiResponse<Data> ) => {
+export const getTodosAndMessages = async ( req:NextApiRequest, res: NextApiResponse<Data> ) => {
 
     const { token = ''} = req.cookies as { token: string }
-
+    
     try {
         let messages;
         let todos;
-
+        
         const userId = await jwt.verifyJWT( token )
 
         if (!userId) {
@@ -43,12 +43,13 @@ const getTodosAndMessages = async ( req:NextApiRequest, res: NextApiResponse<Dat
         }
 
         authUser.role === 'USER_ROLE'
-           ? messages = await MessageModel.find({ status: 'active' }).populate('user')
-           : messages = await MessageModel.find().populate('user');
+        ? messages = await MessageModel.find({ status: 'active' }).populate('user')
+        : messages = await MessageModel.find().populate('user');
         
         authUser.role === 'USER_ROLE'
-           ? todos = await ToDoModel.find({ user:  authUser._id }).sort({ createdAt: 'descending' }).populate('user')
-           : todos = await ToDoModel.find().sort({createdAt: 'descending'}).populate('user');
+        ? todos = await ToDoModel.find({ user:  authUser._id }).sort({ createdAt: 'descending' }).populate('user')
+        : todos = await ToDoModel.find().sort({createdAt: 'descending'}).populate('user');
+        
 
         await db.disconnectDatabase();
         
@@ -57,7 +58,7 @@ const getTodosAndMessages = async ( req:NextApiRequest, res: NextApiResponse<Dat
     } catch (error) {
         console.log(error);
 
-        res.status(500).json({ message: 'something went wrong while trying to get messages' })
+        res.status(500).json({ message: 'something went wrong while trying to get messages and todos' })
     }
 }
 

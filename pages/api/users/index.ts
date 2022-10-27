@@ -68,7 +68,7 @@ export default function handler( req: NextApiRequest, res: NextApiResponse<Data>
     }
 }
 
-const createUser = async ( req: NextApiRequest, res:NextApiResponse<Data> ) => {
+export const createUser = async ( req: NextApiRequest, res:NextApiResponse<Data> ) => {
     try {
         const { name='', email='', password='' } = req.body as {email: string, password: string, name: string};
         
@@ -102,15 +102,15 @@ const createUser = async ( req: NextApiRequest, res:NextApiResponse<Data> ) => {
         }
 
 
-        const newUser = new UserModel({
-            name,
-            email: email.toLowerCase(),
-            password: bcrypt.hashSync( password ),
-            role: 'USER_ROLE'
-        });
+        let newUser ;
 
         try {
-             await newUser.save({ validateBeforeSave: true });
+            newUser = await UserModel.create({
+                    name,
+                    email: email.toLowerCase(),
+                    password: bcrypt.hashSync( password ),
+                    role: 'USER_ROLE'
+                });           
         } catch (error) {
             console.log(error);
             return res.status(500).json({
@@ -136,7 +136,7 @@ const createUser = async ( req: NextApiRequest, res:NextApiResponse<Data> ) => {
         
     } catch (error) {
         console.log(error);
-        res.status(500).json({ message: 'something went wrong while trying to save todos' })
+        res.status(500).json({ message: 'Something went wrong while trying to save the user' })
     }
 }
 

@@ -1,10 +1,9 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-import { IAuth } from '../../../interfaces';
-import { UserModel } from '../../../models';
+import { IAuth } from '../../../../interfaces';
+import { UserModel } from '../../../../models';
 
-import { jwt } from '../../../utils/auth';
-import bcrypt from 'bcryptjs';
-import { db } from '../../../database';
+import { jwt } from '../../../../utils/auth';
+import { db } from '../../../../database';
 
 type Data =
  | { message: string}
@@ -30,14 +29,16 @@ const checkJWT = async (req: NextApiRequest, res: NextApiResponse<Data>) => {
 
         userId = await jwt.verifyJWT( token );
 
-
         await db.connectToDatabase();
         const user = await UserModel.findById( userId ).lean();
+
         await db.disconnectDatabase();
 
         if ( !user ) {
             return res.status(400).json({ message: 'There is no user with that ID' });
         }
+
+        console.log('miremos el user', user)
 
         // after verify the token generates a new one
         res.status(200).json({
