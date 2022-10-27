@@ -136,6 +136,62 @@ describe('messages controllers', () => {
 
         });        
         
+    it('should return User messages with the ADMIN_ROLE', async () => {
+        (verifyJWT as jest.Mock).mockImplementationOnce( () => '123456' );
+        
+        (UserModel.findOne as jest.Mock).mockImplementationOnce(() => ({
+            _id: "63584c723c2d5fc7dce97ea2",
+            name: "Test 1",
+            email: "test@gmail.com",
+            password: "$2a$10$zPauG59AXkKLza04oYeBHu7K0Q/IMcgYJdge8Kph4TOKr5jOZ.Lj.",
+            role: "ADMIN_ROLE",
+            google: true,
+            status: true,
+            __v: 0
+        }));
+            
+        (MessageModel.find as jest.Mock).mockImplementationOnce(() => ({
+            populate: jest.fn().mockReturnValue([
+                {
+                    _id: "63584cc03c2d5fc7dce97ebb",
+                    text: "myUser test",
+                    createdAt: 1666731200365,
+                    status: "active",
+                    user: {
+                        _id: "63584caa3c2d5fc7dce97ead",
+                        email: "out@gmail.com",
+                        google: false,
+                        __v: 0
+                    },
+                    __v: 0
+                },
+            ])
+        }));
+            
+        const { req, res } = createMocks({ method: 'GET' });
+        
+        await getMessages( req, res);
+        
+        expect( res._getJSONData() ).toEqual([
+            {
+                _id: "63584cc03c2d5fc7dce97ebb",
+                text: "myUser test",
+                createdAt: 1666731200365,
+                status: "active",
+                user: {
+                    _id: "63584caa3c2d5fc7dce97ead",
+                    email: "out@gmail.com",
+                    google: false,
+                    __v: 0
+                },
+                __v: 0
+            },
+        ]);
+            
+        expect(res._getStatusCode()).toBe(200);
+
+        });        
+        
         it('should handle getMessages error', async () => {
             (verifyJWT as any).mockImplementationOnce( () => {
                 throw new Error()
@@ -178,5 +234,19 @@ describe('messages controllers', () => {
                 expect.objectContaining({ message: 'Something went wrong while trying to delete Messages'})
             ));
         });
+    });
+
+    describe('Invalid handle google request method', () => {
+        it('Should return 400 error when the request method is not POST', async () => {
+            const { req, res } = createMocks({ method: 'POST' });
+            
+            await messagesHandler(req,res);
+            
+            expect(res._getStatusCode()).toBe(400);
+            
+            expect(res._getJSONData()).toEqual(
+                expect.objectContaining( { message: 'Invalid method'} )
+            );
+        })
     });
 });

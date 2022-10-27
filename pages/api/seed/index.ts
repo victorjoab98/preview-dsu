@@ -1,6 +1,6 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-import { db, seedData } from '../../database';
-import { UserModel, MessageModel, ToDoModel } from '../../models';
+import { db, seedData } from '../../../database';
+import { UserModel, MessageModel, ToDoModel } from '../../../models';
 
 interface Data {
   message: string;

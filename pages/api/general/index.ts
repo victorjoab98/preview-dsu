@@ -50,7 +50,6 @@ export const getTodosAndMessages = async ( req:NextApiRequest, res: NextApiRespo
         ? todos = await ToDoModel.find({ user:  authUser._id }).sort({ createdAt: 'descending' }).populate('user')
         : todos = await ToDoModel.find().sort({createdAt: 'descending'}).populate('user');
         
-        console.log('are you giving it the value?????', todos)
 
         await db.disconnectDatabase();
         

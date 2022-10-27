@@ -1,10 +1,10 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-import { IAuth } from '../../../interfaces';
-import { UserModel } from '../../../models';
+import { IAuth } from '../../../../interfaces';
+import { UserModel } from '../../../../models';
 
-import { jwt } from '../../../utils/auth';
+import { jwt } from '../../../../utils/auth';
+import { db } from '../../../../database';
 import bcrypt from 'bcryptjs';
-import { db } from '../../../database';
 
 type Data =
  | { message: string}
