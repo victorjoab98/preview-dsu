@@ -38,7 +38,7 @@ const VictorUser: SeedUser = {
 }
 
 const JaimeUser: SeedUser = {
-    _id: '634f1a0283a505369ee20daa',
+    _id: '634f1a0283a505369ee20dad',
     name: 'Jaime Tuyuc',
     email: 'jaime@gmail.com',
     password: bcrypt.hashSync('1234'),
@@ -47,7 +47,7 @@ const JaimeUser: SeedUser = {
 }
 
 const MarcelaUser: SeedUser = {
-    _id: '634f1a0283a505369ee20dad',
+    _id: '634f1a0283a505369ee20daa',
     name: 'Marcela Obeso',
     email: 'marcela@gmail.com',
     password: bcrypt.hashSync('1234'),
@@ -72,55 +72,6 @@ const CristianUser: SeedUser = {
     role: 'USER_ROLE',
     status: true  
 }
-
-
-// const KunjoUser: SeedUser = {
-//     name: 'Kunjo Lee',
-//     email: 'kunjo@gmail.com',
-//     password: bcrypt.hashSync('1234'),
-//     role: 'ADMIN_ROLE',
-//     status: true  
-// }
-
-// const VictorUser: SeedUser = {
-//     name: 'Victor Morales',
-//     email: 'victor@gmail.com',
-//     password: bcrypt.hashSync('1234'),
-//     role: 'ADMIN_ROLE',
-//     status: true  
-// }
-
-// const JaimeUser: SeedUser = {
-//     name: 'Jaime Tuyuc',
-//     email: 'jaime@gmail.com',
-//     password: bcrypt.hashSync('1234'),
-//     role: 'USER_ROLE',
-//     status: true  
-// }
-
-// const MarcelaUser: SeedUser = {
-//     name: 'Marcela Obeso',
-//     email: 'marcela@gmail.com',
-//     password: bcrypt.hashSync('1234'),
-//     role: 'USER_ROLE',
-//     status: true  
-// }
-
-// const ChamaleUser: SeedUser ={
-//     name: 'Victor Chamale',
-//     email: 'chamale@gmail.com',
-//     password: bcrypt.hashSync('1234'),
-//     role: 'USER_ROLE',
-//     status: true  
-// }
-
-// const CristianUser: SeedUser = {
-//     name: 'Cristian Monroy',
-//     email: 'cristian@gmail.com',
-//     password: bcrypt.hashSync('1234'),
-//     role: 'USER_ROLE',
-//     status: true  
-// }
 
 export const seedData: SeedData = {
     todos: [
