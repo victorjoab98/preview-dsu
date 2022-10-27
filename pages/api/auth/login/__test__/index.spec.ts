@@ -30,8 +30,7 @@ describe('API Login route', () => {
         it('should return status 400 when user not founded', async () => {
             
             const { req, res } = createMocks({ method: 'POST', body: {
-                email:'',
-                password:''
+                email:'Test@gmail.com',                password:'test'
             } });
 
             (UserModel.findOne as jest.Mock).mockImplementationOnce(() => null);
@@ -47,8 +46,7 @@ describe('API Login route', () => {
         
         it('should return status 400 when password is not the same than in DB', async () => {
             const { req, res } = createMocks({ method: 'POST', body: {
-                email:'',
-                password:''
+                email:'Test@gmail.com',                password:'test'
             } });
     
             (UserModel.findOne as jest.Mock).mockImplementationOnce(() => ({
@@ -77,8 +75,7 @@ describe('API Login route', () => {
         it('should return status 400 when user not founded', async () => {
             
             const { req, res } = createMocks({ method: 'POST', body: {
-                email:'',
-                password:''
+                email:'Test@gmail.com',                password:'test'
             } });
 
             (UserModel.findOne as jest.Mock).mockImplementationOnce(() => null);
@@ -94,8 +91,7 @@ describe('API Login route', () => {
 
         it('should return status 200 with the correct login response', async () => {
             const { req, res } = createMocks({ method: 'POST', body: {
-                email:'',
-                password:''
+                email:'Test@gmail.com',                password:'test'
             } });
     
             (UserModel.findOne as jest.Mock).mockImplementationOnce(() => ({
@@ -135,8 +131,7 @@ describe('API Login route', () => {
         it('should handle login catch error', async () => {
             
             const { req, res } = createMocks({ method: 'POST', body: {
-                email:'',
-                password:''
+                email:'Test@gmail.com',                password:'Test'
             }});
             
             (UserModel.findOne as jest.Mock).mockImplementationOnce(() => ({
