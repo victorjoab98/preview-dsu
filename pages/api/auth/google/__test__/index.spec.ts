@@ -111,7 +111,6 @@ describe('Auth Google API Route', () =>{
                     token: 'my sign token value'
                 })
             );
-            
         });
       
         it('should return 400 when user status is falsy', async () => {

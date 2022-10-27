@@ -30,7 +30,8 @@ describe('API Login route', () => {
         it('should return status 400 when user not founded', async () => {
             
             const { req, res } = createMocks({ method: 'POST', body: {
-                email:'Test@gmail.com',                password:'test'
+                email:'Test@gmail.com',
+                password:'test'
             } });
 
             (UserModel.findOne as jest.Mock).mockImplementationOnce(() => null);
