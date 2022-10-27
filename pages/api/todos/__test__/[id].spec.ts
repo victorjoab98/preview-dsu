@@ -17,6 +17,15 @@ jest.mock('../../../../models');
 
 describe('ToDo operation endpoints', () => {
 
+    describe('Test handler /api/users', () => {
+        it('should return a 400 and a message when method is not valid', async () => {
+            const { req, res } = createMocks({ method: 'PUT'});
+            await handlerApi(req, res);
+            expect(res._getStatusCode()).toBe(400);
+            expect(res._getJSONData()).toEqual({ message: 'Invalid method' });
+        });
+    });
+
     describe('Test UPDATE /api/users', () => {
 
         it('should return a 500 when an exception was triggered', async ()=>{
