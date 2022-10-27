@@ -88,7 +88,7 @@ const updateTodo = async ( req: NextApiRequest, res: NextApiResponse<Data>) => {
         return res.status(200).json( todo )
 
     }catch(error){
-        console.error(error);
+        console.log(error);
         res.status(500).json({ message: 'Something went wrong while trying to update todo' })
     }
 }
@@ -106,7 +106,7 @@ const deleteTodo = async ( req: NextApiRequest, res: NextApiResponse<Data>) => {
         return res.status(200).json( todo )
 
     }catch(error){
-        console.error(error);
+        console.log(error);
         res.status(500).json({ message: 'Something went wrong while trying to delete todo' })
     }
 }
