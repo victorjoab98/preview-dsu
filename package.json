@@ -8,7 +8,8 @@
     "start": "next start",
     "lint": "next lint",
     "test": "jest --watch",
-    "test-coverage": "yarn test --coverage --watchAll"
+    "test-coverage": "yarn test --coverage --watchAll",
+    "docker-up-dev": "docker-compose -f docker-compose.dev.yml up --remove-orphans"
   },
   "dependencies": {
     "@emotion/react": "^11.10.4",
